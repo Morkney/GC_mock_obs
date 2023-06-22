@@ -16,7 +16,7 @@ print('Converting Nbody6 GC data to format required by COCOA tools.')
 
 # Load the simulation data:
 #--------------------------------------------------------------------------
-path = '/user/HS301/m18366/EDGE_codes/GC_mocks/'
+path = '/user/HS301/m18366/EDGE_codes/GC_mock_obs/'
 sim_name = 'GC_mock_data'
 sim = read_nbody6(path+sim_name, df=True)
 print('>    %s has been loaded.' % sim_name)
@@ -58,6 +58,7 @@ s['z'] = np.ones_like(s['mass']) * 0.001
 file = './files/YBC_%s.dat' % sim_name
 data = np.transpose([*np.transpose(pos), s['lum'], s['teff'], s['mass'], s['z']])
 format = '%8.3f %8.3f %8.3f %8.3e %8.3f %8.3f %8.3e'
+format = '%.3f %.3f %.3f %.3e %.3f %.3f %.3e'
 np.savetxt(file, data, header='x/pc, y/pc, z/pc, log(Lsol), Teff/K, m/Msol, Z', fmt=format)
 print('>    YBC inputs saved to %s.' % file)
 
@@ -78,6 +79,7 @@ print('>    YBC inputs saved to %s.' % file)
 # export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
 # ldconfig -p | grep libjpeg
+print(1/0)
 #--------------------------------------------------------------------------
 
 # Make a plot to confirm that the data is sensible:
