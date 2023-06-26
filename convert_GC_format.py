@@ -1,3 +1,5 @@
+from config import *
+
 import numpy as np
 from read_out3 import read_nbody6
 import GC_functions as func
@@ -16,13 +18,11 @@ print('Converting Nbody6 GC data to format required by COCOA tools.')
 
 # Load the simulation data:
 #--------------------------------------------------------------------------
-path = '/user/HS301/m18366/EDGE_codes/GC_mock_obs/'
-sim_name = 'GC_mock_data'
 sim = read_nbody6(path+sim_name, df=True)
 print('>    %s has been loaded.' % sim_name)
 
 # Select the relevant snapshot:
-snapshot = 500
+snapshot = -1
 s = sim[snapshot]
 time = s['age']
 print('>    Snapshot %i with time %.2f Myr' % (snapshot, time))
@@ -55,7 +55,7 @@ print('>    Aligned such that the galactic centre is to the right.')
 s['z'] = np.ones_like(s['mass']) * 0.001
 
 # Data for input into YBC:
-file = './files/YBC_%s.dat' % sim_name
+file = './Nbody6_sims/YBC_%s.dat' % sim_name
 data = np.transpose([*np.transpose(pos), s['lum'], s['teff'], s['mass'], s['z']])
 format = '%8.3f %8.3f %8.3f %8.3e %8.3f %8.3f %8.3e'
 format = '%.3f %.3f %.3f %.3e %.3f %.3f %.3e'
@@ -74,12 +74,6 @@ print('>    YBC inputs saved to %s.' % file)
 #    mass: 6
 #    Z: 7
 #    Mdot: ?
-
-# Make sure to module load GCC before running COCOA!
-# export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
-# ldconfig -p | grep libjpeg
-print(1/0)
 #--------------------------------------------------------------------------
 
 # Make a plot to confirm that the data is sensible:
@@ -87,7 +81,7 @@ print(1/0)
 fs = 10
 fig, axes = plt.subplots(figsize=(3*2, 3*2), ncols=2, nrows=2, sharex='col', sharey='row', gridspec_kw={'hspace':0.05, 'wspace':0.05})
 
-box = 100 # pc
+box = np.abs(pos[body]).max() * 4 # pc
 panels = [(0,2), (0,1), (2,1)]
 zs = [1, 2, 0]
 labels = [('x', 'z'), ('x', 'y'), ('z', 'y')]

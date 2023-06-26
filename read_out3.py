@@ -41,7 +41,7 @@ def read_nbody6(file, df=False):
   velocity = result.max()
 
   # Grab initial velocity again:
-  input = open(file + '/cluster.input')
+  input = open(file + '/GC_IC.input')
   input = input.read().split('\n')
   velocity2 = float(input[12].split(' ')[3])
 
