@@ -55,12 +55,11 @@ print('>    Aligned such that the galactic centre is to the right.')
 s['z'] = np.ones_like(s['mass']) * 0.001
 
 # Data for input into YBC:
-file = './Nbody6_sims/YBC_%s.dat' % sim_name
-data = np.transpose([*np.transpose(pos), s['lum'], s['teff'], s['mass'], s['z']])
-format = '%8.3f %8.3f %8.3f %8.3e %8.3f %8.3f %8.3e'
-format = '%.3f %.3f %.3f %.3e %.3f %.3f %.3e'
-np.savetxt(file, data, header='x/pc, y/pc, z/pc, log(Lsol), Teff/K, m/Msol, Z', fmt=format)
-print('>    YBC inputs saved to %s.' % file)
+file = path + sim_name + '/reduced_data_%s.dat' % sim_name
+data = np.transpose([*np.transpose(pos), np.log10(s['lum']), s['teff'], s['mass'], s['z'], s['kstara']])
+format = '%.3f %.3f %.3f %.3e %.3f %.3f %.3e %i'
+np.savetxt(file, data, header='x/pc, y/pc, z/pc, log(Lsol), Teff/K, m/Msol, Z, Phase', fmt=format)
+print('>    Reduced data saved to %s.' % file)
 
 # YBC parameters:
 # 1. JWST MIRI wide filters, Vegamags

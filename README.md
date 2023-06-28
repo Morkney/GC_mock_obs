@@ -22,6 +22,7 @@ Pipeline description:
 3 - Run the GC Nbody6 simulation for set amount of time.
     - Needs to be done manually. Restart instructions are included in the simulation directories.
 
+##############################################################
 4 - a) Convert the Nbody6 output into a format readable by YBC: http://stev.oapd.inaf.it/YBC/
     - Prime and activate the "convert_GC_format.py" script
   - b) Run YBC on the data
@@ -35,7 +36,9 @@ Pipeline description:
 
 6 - Convert the COCOA output fits files into a GC mock image
     - Prime and run the "plot_FITS.py" script
+###############################################################
 
+4 - Use ArtPop instead.
 ===============================================================
 
 Things you will need:
