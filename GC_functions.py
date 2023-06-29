@@ -1,5 +1,22 @@
 import numpy as np
 
+# Shrink sphere centre:
+def shrink(s, shrink_factor=0.9, fraction=0.5):
+  filt_orig = (s['kstara'] != 13) * (s['kstara'] != 14) * (s['mass'] < 10)
+  pos = s['pos']*1
+  r = np.linalg.norm(pos, axis=1)
+  sphere = r[filt_orig].max()
+  cen = np.zeros(3)
+  filt = filt_orig.copy()
+  while np.sum(r[filt] <= sphere) > max(fraction*s['nbound'][filt_orig].sum(), 100):
+    CoM = np.average(pos[filt], weights=s['mass'][filt], axis=0)
+    cen += CoM
+    pos -= CoM
+    sphere *= shrink_factor
+    r = np.linalg.norm(pos, axis=1)
+    filt *= r <= sphere
+  return cen
+
 def R_half(s, type='mass', filt=[0., np.inf], bound=True):
   r = s['r']
   body = s['nbound'] if bound else np.ones_like(s['nbound']).astype('bool')

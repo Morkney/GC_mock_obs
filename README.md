@@ -22,23 +22,13 @@ Pipeline description:
 3 - Run the GC Nbody6 simulation for set amount of time.
     - Needs to be done manually. Restart instructions are included in the simulation directories.
 
-##############################################################
-4 - a) Convert the Nbody6 output into a format readable by YBC: http://stev.oapd.inaf.it/YBC/
-    - Prime and activate the "convert_GC_format.py" script
-  - b) Run YBC on the data
-    - http://stev.oapd.inaf.it/YBC/
-  - c) Convert YBC into a format readable by COCOA
-    - Prime and activate the "convert_YBC_format.py" script
+4 - Produce visual using the ArtPop package: https://artpop.readthedocs.io/en/latest/index.html
+  - a) Prepare the Nbody6 data snapshot (i.e. find the right snapshot, centre correctly, etc.)
+  - b) Pass the Nbody6 mass and x,y coordinates into ArtPop.
+  - c) Plot the ArtPop using the desired filters and observational parameters.
 
-# Currently having trouble with saturated fields of view. Weird.
-5 - Run COCOA on the data
-    - Prime and activate the "run_COCOA.sh" script
+Done!
 
-6 - Convert the COCOA output fits files into a GC mock image
-    - Prime and run the "plot_FITS.py" script
-###############################################################
-
-4 - Use ArtPop instead.
 ===============================================================
 
 Things you will need:
@@ -48,30 +38,13 @@ EDGE1 python distribution
 
 Astropy python module
 
-YBC:
-http://stev.oapd.inaf.it/YBC/
+ArtPop python module (the edited version that allows passing of Nbody6 data)
 
-COCOA:
-https://github.com/abs2k12/COCOA.git
-Located in the base directory
+lmfit python module
+
+agama python module
 
 McLuster:
 git clone https://github.com/ahwkuepper/mcluster.git
 git checkout 8ef0880b21e88537b78cfa3789169d33e4151455
 Located in the base directory
-
-GSL:
-Installation instructions below -
-wget "ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz"
-tar -xf gsl-latest.tar.gz
-cd gsl_folder # Wherever the GSL folder is
-export GSL_DIR=$HOME/GSL
-mkdir $GSL_DIR
-./configure --prefix=$GSL_DIR && make && make install
-# GSL export statements
-export GSL_DIR=$HOME/GSL
-export PATH=$PATH:$GSL_DIR/bin
-export C_INCLUDE_PATH=$GSL_DIR/include
-export LIBRARY_PATH=$LIBRARY_PATH:$GSL_DIR/lib
-export LD_LIBRARY_PATH="$GSL_DIR/lib:$LD_LIBRARY_PATH"
-- Add the export statements to your bashrc script
