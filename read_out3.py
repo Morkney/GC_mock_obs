@@ -89,7 +89,7 @@ def read_nbody6(file, df=False):
     # Define velocity correction:
     if first:
       vel_correct = velocity / vs[:,0].max()
-      vel_correct2 = velocity2 / np.linalg.norm(alist[12:15])
+      vel_correct2 = velocity2 / alist[12]
 
     # Define outputs:
     snapshot = {}

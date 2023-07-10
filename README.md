@@ -48,3 +48,12 @@ McLuster:
 git clone https://github.com/ahwkuepper/mcluster.git
 git checkout 8ef0880b21e88537b78cfa3789169d33e4151455
 Located in the base directory
+
+To compile Nbody6df:
+git clone https://github.com/JamesAPetts/NBODY6df.git
+cd NBODY6df/GPU2
+change sm_20 to sm_30 in the makefile
+mkdir Build
+mkdir run
+make gpu
+> The executable will be in the /run directory

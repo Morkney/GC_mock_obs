@@ -10,7 +10,7 @@ def natural_key(string_):
   return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
 
 # Find each simulation directory:
-dirs = np.array(os.listdir('./'))
+dirs = np.array(os.listdir('./Nbody_sims/'))
 dirs = dirs[[i[0].isdigit() for i in dirs]]
 dirs = dirs[np.argsort(([int(i[:-1]) for i in dirs]))[::-1]]
 

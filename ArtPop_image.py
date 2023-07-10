@@ -16,14 +16,9 @@ from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt, matplotlib.patches as patches
 plt.ion()
 
+SC_age = 1 # [Gyr]
 plot_GC = False
 centre = 'shrink'
-
-# Tasks for next time:
-# 1. Solve the issue of the remnant masses. Do I need to account for this or is it already baked in?
-# 3. Read ArtPop paper: https://arxiv.org/pdf/2109.13943.pdf
-# 4. Code up extraction of data from EDGE snapshots.
-# 5. Make the pipeline run smoothely.
 
 # /user/HS301/m18366/.local/lib/python3.6/site-packages/artpop/
 
@@ -32,13 +27,25 @@ centre = 'shrink'
 sim = read_nbody6(path+sim_name, df=True)
 print('>    Nbody6 simulation %s has been loaded.' % sim_name)
 
-Z = 0.001 # Set the metallicity
-
 # Select the relevant snapshot:
+time = np.array([s['age'] for s in sim])
+snapshot = np.abs(time - SC_age*1e3).argmin()
 snapshot = -1
 s = sim[snapshot]
-age = s['age'] # [Myr]
-print('>    Snapshot %i with age %.2f Myr' % (snapshot, age))
+print('>    Snapshot %i with age %.2f Myr' % (snapshot, s['age']))
+#--------------------------------------------------------------------------
+
+# Track the full orbit:
+#--------------------------------------------------------------------------
+orbit_pos = np.empty([len(sim), 3])
+for i, s_i in enumerate(sim):
+
+  # Centre the GC position:
+  body_noBHs = s_i['nbound'] & (s_i['kstara'] != 14)
+  cen = np.average(s_i['pos'][body_noBHs], weights=s_i['mass'][body_noBHs], axis=0)
+
+  # Orbital position:
+  orbit_pos[i] = s_i['rdens'] + s_i['rg']*1e3 + cen
 #--------------------------------------------------------------------------
 
 # Inspect snapshot data:
@@ -46,7 +53,8 @@ print('>    Snapshot %i with age %.2f Myr' % (snapshot, age))
 # Find tail stars, body stars, and black hole type stars:
 s['tail'] = ~s['nbound'] & (s['mass'] > 0)
 s['body'] = s['nbound'] & (s['mass'] > 0)
-s['BHs'] = s['kstara'] == (13 and 14)
+s['BHs'] = np.array([kstara in [13, 14] for kstara in s['kstara']])
+s['remnants'] = np.array([kstara in [10, 11, 12, 13, 14, 15] for kstara in s['kstara']])
 
 # Centre:
 s['pos'] -= s['rdens']
@@ -64,31 +72,32 @@ print('>    Centred on the GC body.')
 if plot_GC:
   plot_Nbody6_data.plot_Nbody6(s)
 
+hlr = func.R_half(s)
+
 rng = 100
 #--------------------------------------------------------------------------
 
 # Create source object from Nbody6 data:
 # To see all the filters and bands: artpop.phot_system_lookup()
 #------------------------------------------------------------------
+
+# Remove remnants from arrays that will be accessed by ArtPop:
+for field in ['mass', 'pos']:
+  s[field] = s[field][~s['remnants']]
+
 src = artpop.MISTNbodySSP(
-    log_age = np.log10(age * 1e6),
-    feh = Z,
-    r_eff = 2 * u.pc,
-    num_r_eff = 1,
+    log_age = np.log10(s['age'] * 1e6),
+    feh = GC_Z,
+    r_eff = hlr * u.pc,
+    num_r_eff = 10,
     use_stars = s,
     phot_system = 'LSST',
-    distance = 0.1 * u.Mpc,
+    distance = 0.2 * u.Mpc,
     xy_dim = 701,
-    pixel_scale = 0.1 * u.arcsec/u.pixel,
+    pixel_scale = 0.2 * u.arcsec/u.pixel,
     random_state = rng,
 )
 #------------------------------------------------------------------
-
-x = src.x * (2*2*1 / 701) - (2*2*1/2)
-print(s['pos'][:,0])
-print(x)
-
-print(1/0)
 
 # Initialise an Imager object.
 #------------------------------------------------------------------
@@ -103,7 +112,7 @@ imager = artpop.ArtImager(
 # Mock observe the source using the observe method.
 #------------------------------------------------------------------
 # PSF with 0.6'' seeing
-psf = artpop.moffat_psf(fwhm=0.6*u.arcsec)
+psf = artpop.moffat_psf(fwhm=0.8*u.arcsec)
 
 # observe in gri (assuming the same seeing in all bands)
 obs_g = imager.observe(
@@ -118,5 +127,58 @@ obs_i = imager.observe(src, 'LSST_i', 30 * u.min, sky_sb=20, psf=psf)
 rgb = make_lupton_rgb(obs_i.image, obs_r.image, obs_g.image, stretch=0.2)
 
 # Show image:
+artpop.show_image(rgb);
+#------------------------------------------------------------------
+
+print(1/0)
+
+# Insert a background image:
+#------------------------------------------------------------------
+# Standard library imports
+from copy import deepcopy
+from io import BytesIO
+
+# Third-party imports
+import requests
+from astropy.io import fits
+
+url_prefix = 'https://www.legacysurvey.org/viewer/'
+
+def fetch_psf(ra, dec):
+    """
+    Returns PSFs in dictionary with keys 'g', 'r', and 'z'.
+    """
+    url = url_prefix + f'coadd-psf/?ra={ra}&dec={dec}&layer=dr8&bands=grz'
+    session = requests.Session()
+    resp = session.get(url)
+    hdulist = fits.open(BytesIO(resp.content))
+    psf = {'grz'[i]: hdulist[i].data for i in range(3)}
+    return psf
+
+def fetch_coadd(ra, dec):
+    """
+    Returns coadds in dictionary with keys 'g', 'r', and 'z'.
+    """
+    url = url_prefix + f'cutout.fits?ra={ra}&dec={dec}&size=900&'
+    url += 'layer=ls-dr8&pixscale=0.262&bands=grz'
+    session = requests.Session()
+    resp = session.get(url)
+    cutout = fits.getdata(BytesIO(resp.content))
+    image = {'grz'[i]: cutout[i, :, :] for i in range(3)}
+    return image
+
+# random coordinates in Legacy Survey footprint
+ra,dec = 182.5002, 12.5554
+
+# grab the model grz PSFs at this location
+psf = fetch_psf(ra, dec)
+
+# grab the grz coadds at this location
+real_image = fetch_coadd(ra, dec)
+
+# see what a RGB image at this location looks like
+rgb = make_lupton_rgb(real_image['z'], real_image['r'],
+                      real_image['g'], stretch=0.04)
+
 artpop.show_image(rgb);
 #------------------------------------------------------------------

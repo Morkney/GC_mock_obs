@@ -69,3 +69,5 @@ def plot_Nbody6(sim, box=None, save_plot=True):
     file = './images/raw_%s.pdf' % sim_name
     plt.savefig(file, bbox_inches='tight')
     print('Plot saved to %s.' % file)
+
+  return
