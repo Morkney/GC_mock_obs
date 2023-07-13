@@ -2,9 +2,9 @@
 
 #===================================#
 # Name of the simulation:
-sim_name=pilot
-EDGE_sim_name=Halo1459_fiducial_hires
-EDGE_output=output_00020
+sim_name=DM_test
+EDGE_sim_name=TestBackground
+EDGE_output=
 file=./Nbody6_sims/files/${EDGE_sim_name}_${EDGE_output}_${sim_name}.txt
 
 #===================================#
@@ -53,6 +53,7 @@ sed -i "12s/.*/${phase}/" $directory/GC_IC.input
 sed -i "13s/.*/${galaxy}/" $directory/GC_IC.input
 
 # Integrate with tidal tail too:
+sed -i "6s/.*/0 -1 0 0 1 2 0 1 0 1/" $directory/GC_IC.input
 sed -i "7s/.*/0 0 0 2 1 0 0 2 0 3/" $directory/GC_IC.input
 
 echo Built $directory

@@ -2,8 +2,8 @@ import numpy as np
 import sys
 
 # Time scaling "T*":
-T_scale = 1.705
 T_scale = None
+#T_scale = 1.920
 if T_scale is None:
   T_scale = float(sys.argv[1])
 

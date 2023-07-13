@@ -43,7 +43,11 @@ def read_nbody6(file, df=False):
   # Grab initial velocity again:
   input = open(file + '/GC_IC.input')
   input = input.read().split('\n')
-  velocity2 = float(input[12].split(' ')[3])
+  try:
+    velocity2 = float(input[12].split(' ')[3])
+  except:
+    print('Assuming this is a DMC sim.')
+    velocity2 = float(input[13].split(' ')[3])
 
   f_in = FortranFile(runs[run_num])
 

@@ -40,6 +40,9 @@ def Dehnen_profile(r, log_rs, log_Mg, gamma):
   rho_0 = Mg * (3. - gamma) / (4. * np.pi)
   return rho_0 * rs / ((r**gamma) * (r + rs)**(4 - gamma))
 
+def Dehnen_mass(r, rs, Mg, gamma):
+  return Mg * (r/(r+rs))**(3-gamma)
+
 # Define the circular velocity in a Dehnen profile [Dehnen 1993]:
 def Dehnen_vcirc(r, rs, Mg, gamma, G):
   return np.sqrt(G * Mg * r**(2 - gamma) / (r + rs)**(3 - gamma))
