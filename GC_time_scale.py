@@ -3,13 +3,13 @@ import sys
 
 # Time scaling "T*":
 T_scale = None
-#T_scale = 1.920
+#T_scale = 2.127
 if T_scale is None:
   T_scale = float(sys.argv[1])
 
 # Maximum age is 13.8 Gyr:
-#age_max = 13.8 * 1e3 # [Myr]
-age_max = 1 * 1e3 # [Myr]
+age_max = 13.8 * 1e3 # [Myr]
+#age_max = 1 * 1e3 # [Myr]
 
 # Desired number of timesteps:
 steps = int(250 * age_max / 1e3)

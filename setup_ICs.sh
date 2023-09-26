@@ -1,12 +1,11 @@
 #!/bin/bash
 
 #===================================#
-# Name of the simulation:
-sim_name=DM_test
-EDGE_sim_name=TestBackground
-EDGE_output=
-file=./Nbody6_sims/files/${EDGE_sim_name}_${EDGE_output}_${sim_name}.txt
-
+EDGE_sim_name=Halo624_fiducial_hires
+EDGE_output=output_00017
+GC_ID=1
+sim_name=GC_${GC_ID}
+file=./Nbody6_sims/files/${sim_name}.txt
 #===================================#
 
 # Copy the new IC file into a fresh simulation directory:

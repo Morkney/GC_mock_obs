@@ -16,9 +16,11 @@ from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt, matplotlib.patches as patches
 plt.ion()
 
+sim_name = 'Halo1459_fiducial_hires_output_00020_1'
 SC_age = 1 # [Gyr]
-plot_GC = False
+plot_GC = True
 centre = 'shrink'
+GC_Z = np.genfromtxt('./GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID][2]
 
 # /user/HS301/m18366/.local/lib/python3.6/site-packages/artpop/
 
@@ -30,7 +32,6 @@ print('>    Nbody6 simulation %s has been loaded.' % sim_name)
 # Select the relevant snapshot:
 time = np.array([s['age'] for s in sim])
 snapshot = np.abs(time - SC_age*1e3).argmin()
-snapshot = -1
 s = sim[snapshot]
 print('>    Snapshot %i with age %.2f Myr' % (snapshot, s['age']))
 #--------------------------------------------------------------------------
