@@ -61,11 +61,18 @@ for sim in sims:
     colour = u'\u001b[38;5;208m'
   elif (mod_time >= 1800) or ('gpupot' not in err_end):
     colour = u'\u001b[38;5;160m'
+  elif ('IEEE_' in err_end):
+    colour = u'\u001b[38;5;160m'
   elif 'gpupot:' in err_end:
     colour = u'\u001b[38;5;046m'
   else:
     colour = u'\u001b[38;5;232m'
 
+  # Read the host server from run.log:
+  with open(run+'/run.log') as file:
+    line = file.readlines()
+    server = line[1].split(', ')[0]
+
   if display or err_end != 'DONE':
-    print('%s: %s Last time: %s %s last err: %s%s%s' % \
-          (sim, pad1, out_end, pad2, colour, err_end.split('\n')[-1], u'\033[0m'))
+    print('%s, %s: %s Last time: %s %s last err: %s%s%s' % \
+          (server, sim, pad1, out_end, pad2, colour, err_end.split('\n')[-1], u'\033[0m'))

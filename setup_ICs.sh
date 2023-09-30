@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #===================================#
-EDGE_sim_name=Halo624_fiducial_hires
-EDGE_output=output_00017
-GC_ID=1
-sim_name=GC_${GC_ID}
+EDGE_sim_name=Halo605_fiducial_hires
+EDGE_output=output_00020
+count_ID=68
+sim_name=${EDGE_sim_name}_${EDGE_output}_${count_ID}
 file=./Nbody6_sims/files/${sim_name}.txt
 #===================================#
 

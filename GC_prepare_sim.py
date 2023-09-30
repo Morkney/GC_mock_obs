@@ -17,27 +17,25 @@ plt.ion()
 
 # Enter EDGE1 to terminal to load pynbody modules
 
-GC_ID = 24
+GC_ID = 4
 plot_fit = True
 save_results = False
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
-data = np.genfromtxt('./GC_property_table.txt', unpack=True, skip_header=2, dtype=None, delimiter=',')[GC_ID-1]
+data = np.genfromtxt('./GC_property_table.txt', unpack=True, skip_header=2, dtype=None, delimiter='\t\t\t')[GC_ID-1]
 
-GC_pos = np.array([data[5], data[6], data[7]]) # pc
-GC_vel = np.array([data[8], data[9], data[10]]) # km s^-1
-GC_hlr = data[1] # pc
-GC_mass = 10**data[2] # Msol
-GC_Z = data[3] # dec
-GC_birthtime = data[4] # Myr
+GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
+GC_vel = np.array([data[4], data[5], data[6]]) # km s^-1
+GC_hlr = data[10] # pc
+GC_mass = 10**data[9] # Msol
+GC_Z = data[7] # dec
+GC_birthtime = data[8] # Myr
 EDGE_output = 'output_%05d' % data[12]
 EDGE_sim_name = data[11].decode("utf-8")
-internal_ID = int(data[13])
-#mask_out = data[17]
-#if mask_out:
-#  print('This GC is masked out by Ethan.')
-#  sys.exit(0)
+EDGE_halo = int(data[13]) + 1
+internal_ID = int(data[14])
+count_ID = int(data[15])
 if GC_hlr > 15:
   print('This GC is too diffuse.')
   sys.exit(0)
@@ -48,14 +46,12 @@ if GC_hlr > 15:
 tangos.core.init_db(TANGOS_path + EDGE_sim_name.split('_')[0] + '.db')
 session = tangos.core.get_default_session()
 
+# [This has now been solved by Ethan!]
 # Find all timesteps and progenitor halo numbers:
-last_EDGE_output = tangos.get_simulation(EDGE_sim_name).timesteps[-1].extension
-last_h = tangos.get_halo(('/').join([EDGE_sim_name, last_EDGE_output, 'halo_%i' % 1]))
-EDGE_paths, EDGE_haloes = last_h.calculate_for_progenitors('path()', 'halo_number()')
-EDGE_halo = int(EDGE_haloes[[EDGE_output in i for i in EDGE_paths]])
-
-if EDGE_halo != 1:
-  print('The EDGE halo is =/= 1, check for consistency!')
+#last_EDGE_output = tangos.get_simulation(EDGE_sim_name).timesteps[-1].extension
+#last_h = tangos.get_halo(('/').join([EDGE_sim_name, last_EDGE_output, 'halo_%i' % 1]))
+#EDGE_paths, EDGE_haloes = last_h.calculate_for_progenitors('path()', 'halo_number()')
+#EDGE_halo = int(EDGE_haloes[[EDGE_output in i for i in EDGE_paths]])
 
 h = tangos.get_halo(('/').join([EDGE_sim_name, EDGE_output, 'halo_%i' % EDGE_halo]))
 if np.linalg.norm(GC_pos)/1e3 > h['r200c']*1.1:
@@ -239,7 +235,7 @@ print()
 # Save the results to a file:
 #--------------------------------------------------------------------------
 if save_results:
-  with open(path + f'/files/{EDGE_sim_name}_{EDGE_output}_{internal_ID}{sim_name}.txt', 'w') as file:
+  with open(path + f'/files/{EDGE_sim_name}_{EDGE_output}_{count_ID}{sim_name}.txt', 'w') as file:
     file.write('%.6f\n' % GC_mass)
     file.write('%.6f\n' % GC_hlr)
     file.write('%.6f\n' % 10**GC_Z)
@@ -248,5 +244,7 @@ if save_results:
     file.write('%.6f %.6f %.6f %.6f %.6f %.6f\n' % (GC_pos_birth[0], GC_pos_birth[1], GC_pos_birth[2], \
                                                   GC_vel_birth[0], GC_vel_birth[1], GC_vel_birth[2]))
 
-print('>    Parameter file saved to ' + f'/files/GC_{GC_ID}{sim_name}.txt')
+  print('>    Parameter file saved to ' + f'/files/{EDGE_sim_name}_{EDGE_output}_{count_ID}{sim_name}.txt')
+else:
+  print('>    Parameter file not saved.')
 #--------------------------------------------------------------------------
