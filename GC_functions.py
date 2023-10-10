@@ -109,4 +109,19 @@ def relief(pos, point_size, width):
   x, y, Z, point_size = pos[:,0][idx], pos[:,1][idx], np.log10(Z[idx]), point_size[idx]
   Z[Z != Z] = np.nanmin(Z)
   return x, y, Z, point_size
+
+# Bolometric correction for luminosities:
+#http://articles.adsabs.harvard.edu/pdf/1998JRASC..92...36R
+def BC(T):
+  C6 = -8.499
+  C7 = 13.421
+  C8 = -8.131
+  C9 = -3.901
+  C10 = -0.438
+  T[np.isinf(T)] = 0.
+  return C6*(T-4)**4 + C7*(T-4)**3 + C8*(T-4)**2 + C9*(T-4) + C10
+
+def Lbol_Lv(lum, Teff, Mbolsol=4.74, Mvsol=4.83):
+  Mbol = (Mbolsol - 2.5 * np.log10(lum)) - BC(Teff)
+  return 10**(0.4 * (Mvsol - Mbol))
 #=======================================================================

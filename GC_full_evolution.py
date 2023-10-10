@@ -9,7 +9,7 @@ plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = 'Halo605_fiducial_hires_output_00026_43'
+sim_name = 'Halo605_fiducial_hires_output_00035_61'
 s = read_nbody6(path+sim_name, df=True)
 #------------------------------------------------------------
 
