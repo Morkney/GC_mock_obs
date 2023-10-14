@@ -44,6 +44,7 @@ for sim in sims:
           break
 
   except:
+    continue
     err = np.nan
     mod_time = 0.0
     err_end = 'VOID'
@@ -69,7 +70,7 @@ for sim in sims:
     colour = u'\u001b[38;5;232m'
 
   # Read the host server from run.log:
-  with open(run+'/run.log') as file:
+  with open('./Nbody6_sims/%s' % sim +'/run.log') as file:
     line = file.readlines()
     server = line[1].split(', ')[0]
 

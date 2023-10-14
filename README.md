@@ -56,4 +56,7 @@ change sm_20 to sm_30 in the makefile
 mkdir Build
 mkdir run
 make gpu
+make a synbolic link in GPU2 to Ncode/common6.h
+Do the same for Ncode
+in the lib directory: ln -s cnbint5.cpp cnbint.cpp
 > The executable will be in the /run directory

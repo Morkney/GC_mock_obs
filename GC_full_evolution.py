@@ -9,15 +9,13 @@ plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = 'Halo605_fiducial_hires_output_00035_61'
+sim_name = 'Halo605_fiducial_hires_output_00020_40'
 s = read_nbody6(path+sim_name, df=True)
 #------------------------------------------------------------
 
 # Orbit, mass, size:
 fs = 12
 fig, ax = plt.subplots(figsize=(9,3), ncols=3, nrows=1, gridspec_kw={'wspace':0.5})
-
-s = read_nbody6(path+sim_name, df=True)
 
 time = np.empty(len(s))
 orbit_pos = np.empty([len(s), 3])

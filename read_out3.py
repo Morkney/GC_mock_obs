@@ -71,11 +71,13 @@ def read_nbody6(file, df=False):
       else:
         f_in.close()
         f_in = FortranFile(runs[run_num])
+        print('Read all OUT3 files.')
         continue
 
     try:
       values = f_in.read_reals(dtype=np.float32)
     except:
+      print('No values.')
       continue
 
     # Read in the body values:
@@ -138,35 +140,34 @@ def read_nbody6(file, df=False):
       break
 
     # Kill condition for hollow clusters:
-    if (r < 5).sum() < percent:
+    if ((r < 10).sum() < percent) & (np.linalg.norm(snapshot['rg']*1e3 - snapshot['rdens']) < 10):
       print('>    Hollow cluster.')
       hollow_counter += 1
-      if hollow_counter > 5: # EDITED!
+      if hollow_counter > 10: # EDITED!
         break
       else:
         continue
 
     # Carry forward smallest Roche region [ignore sudden drops]:
+    '''
     if first or (max(r)*1.5 > rmax):
       rmax = min(rmax, max(r)*1.01)
       r_full = np.linalg.norm(snapshot['pos'] - snapshot['rdens'], axis=1)
       snapshot['nbound'][r_full > rmax] = False
 
       # Kill condition for hollow clusters:
-      if (r_full < 5).sum() < percent:
+      if ((r_full < 10).sum() < percent) & (np.linalg.norm(snapshot['rg']*1e3 - snapshot['rdens']) < 10):
         print('>    Hollow cluster.')
         hollow_counter += 1
-        if hollow_counter > 5: # EDITED!
+        if hollow_counter > 10: # EDITED!
           break
         else:
           continue
+    '''
 
     hollow_counter = 0
 
     simulation.append(snapshot)
     first = False
-
-    if len(simulation) > 501:
-      return simulation
 
   return simulation
