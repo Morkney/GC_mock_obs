@@ -1,6 +1,8 @@
 #!/bin/bash
 
-for file in ./Nbody6_sims/files/Halo*; do
+#for file in ./Nbody6_sims/files/Halo*; do
+inputs=("./Nbody6_sims/files/Halo624_fiducial_hires_output_00030_27.txt")
+for file in "${inputs[@]}"; do
   echo $file
   directory=${file%".txt"}
   directory=${directory/files\/}

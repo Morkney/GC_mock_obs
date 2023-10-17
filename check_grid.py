@@ -27,13 +27,14 @@ for sim in sims:
       runs = runs[1:] + [runs[0]]
     run = runs[-1]
 
-    err = os.path.getctime(run+'/err')
+    #err = os.path.getctime(run+'/err')
+    err = os.path.getctime('./Nbody6_sims/%s' % sim + '/err')
     mod_time = (datetime.datetime.now() - datetime.datetime.fromtimestamp(err)).seconds
 
     err_end = str(subprocess.check_output(['tail', '-10', run+'/err'])[:-1])
 
     count = 0
-    with FileReadBackwards(run+'/out') as file:
+    with FileReadBackwards('./Nbody6_sims/%s' % sim + '/out') as file:
       for line in file:
         count += 1
         if 'ADJUST' in line:
@@ -55,14 +56,14 @@ for sim in sims:
 
   if err_end == 'VOID':
     colour = u'\u001b[38;5;8m'
+  elif ('IEEE_' in err_end):
+    colour = u'\u001b[38;5;160m'
   elif ('Closing' in err_end) or ('run' in run):
     colour = u'\u001b[34m'
     err_end = 'DONE'
   elif ('!!!overflow' in err_end) and (mod_time < 1800):
     colour = u'\u001b[38;5;208m'
   elif (mod_time >= 1800) or ('gpupot' not in err_end):
-    colour = u'\u001b[38;5;160m'
-  elif ('IEEE_' in err_end):
     colour = u'\u001b[38;5;160m'
   elif 'gpupot:' in err_end:
     colour = u'\u001b[38;5;046m'
