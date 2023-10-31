@@ -1,0 +1,1536 @@
+9511/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+37737/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+14650/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+6016/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+38651/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+32863/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+7132/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+5311/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+35733/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+30681/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+30487/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+2824/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+31375/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+35306/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+19327/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+29283/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+34824/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+38045/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+6363/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+18454/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+36082/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+33608/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999/43999 orbits complete43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+43999 orbits complete (inf orbits/s)
+10112/43999 orbits completeIntegrating orbits...
+...Done.
+Recentring...
+...Done.
+ArtPop_movie_interp.py:52: VisibleDeprecationWarning: Reading unicode strings without specifying the encoding argument is deprecated. Set the encoding, use None for the system default.
+  data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+ArtPop_movie_interp.py:138: RuntimeWarning: divide by zero encountered in true_divide
+  return 1 / (1 + (x / (1-x))**(-beta))
+ArtPop_movie_interp.py:138: RuntimeWarning: divide by zero encountered in power
+  return 1 / (1 + (x / (1-x))**(-beta))
+IMAGEIO FFMPEG_WRITER WARNING: input image is not divisible by macro_block_size=16, resizing from (2385, 1194) to (2400, 1200) to ensure video compatibility with most codecs and players. To prevent resizing, make your input image divisible by the macro_block_size or set the macro_block_size to 1 (risking incompatibility).
+[swscaler @ 0x20a19a0] Warning: data is not aligned! This can lead to a speedloss
+Done.
+>    Snapshot 52 
+>    Snapshot 53 
+>    Snapshot 54 
+>    Snapshot 55 
+>    Snapshot 56 
+>    Snapshot 57 
+>    Snapshot 58 
+>    Snapshot 59 
+>    Snapshot 60 
+>    Snapshot 61 
+>    Snapshot 62 
+>    Snapshot 63 
+>    Snapshot 64 
+>    Snapshot 156 
+>    Snapshot 157 
+>    Snapshot 158 
+>    Snapshot 159 
+>    Snapshot 160 
+>    Snapshot 161 
+>    Snapshot 162 
+>    Snapshot 163 
+>    Snapshot 164 
+>    Snapshot 165 
+>    Snapshot 166 
+>    Snapshot 167 
+>    Snapshot 168 
+>    Snapshot 286 
+>    Snapshot 287 
+>    Snapshot 288 
+>    Snapshot 289 
+>    Snapshot 290 
+>    Snapshot 291 
+>    Snapshot 292 
+>    Snapshot 293 
+>    Snapshot 294 
+>    Snapshot 295 
+>    Snapshot 296 
+>    Snapshot 297 
+>    Snapshot 298 
+WARNING: Reducing 1984 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 375 stars outside the image
+WARNING: Reducing 1984 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 371 stars outside the image
+WARNING: Reducing 1984 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 375 stars outside the image
+WARNING: Reducing 1984 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 367 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 363 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 355 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 349 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 338 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 328 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 316 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 301 stars outside the image
+WARNING: Reducing 1961 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 284 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 273 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 883 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 903 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 10 stars outside the image
+WARNING: 927 stars outside the image
+WARNING: Reducing 1712 stars to m=1.836935452823186
+WARNING: 16 stars outside the image
+WARNING: 935 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 24 stars outside the image
+WARNING: 943 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 39 stars outside the image
+WARNING: 963 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 50 stars outside the image
+WARNING: 967 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 62 stars outside the image
+WARNING: 996 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 76 stars outside the image
+WARNING: 1008 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 90 stars outside the image
+WARNING: 1024 stars outside the image
+WARNING: Reducing 1711 stars to m=1.836935452823186
+WARNING: 101 stars outside the image
+WARNING: 1031 stars outside the image
+WARNING: Reducing 1702 stars to m=1.836935452823186
+WARNING: 110 stars outside the image
+WARNING: 1040 stars outside the image
+WARNING: Reducing 1702 stars to m=1.836935452823186
+WARNING: 117 stars outside the image
+WARNING: 1041 stars outside the image
+WARNING: Reducing 1658 stars to m=1.7549408503937518
+WARNING: 7 stars outside the image
+WARNING: 1420 stars outside the image
+WARNING: Reducing 1653 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1444 stars outside the image
+WARNING: Reducing 1653 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1469 stars outside the image
+WARNING: Reducing 1652 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1494 stars outside the image
+WARNING: Reducing 1652 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1521 stars outside the image
+WARNING: Reducing 1652 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1540 stars outside the image
+WARNING: Reducing 1652 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1567 stars outside the image
+WARNING: Reducing 1652 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1594 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1606 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1624 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1636 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1652 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1670 stars outside the image
+>    Snapshot 13 
+>    Snapshot 14 
+>    Snapshot 15 
+>    Snapshot 16 
+>    Snapshot 17 
+>    Snapshot 18 
+>    Snapshot 19 
+>    Snapshot 20 
+>    Snapshot 21 
+>    Snapshot 22 
+>    Snapshot 23 
+>    Snapshot 24 
+>    Snapshot 25 
+>    Snapshot 104 
+>    Snapshot 105 
+>    Snapshot 106 
+>    Snapshot 107 
+>    Snapshot 108 
+>    Snapshot 109 
+>    Snapshot 110 
+>    Snapshot 111 
+>    Snapshot 112 
+>    Snapshot 113 
+>    Snapshot 114 
+>    Snapshot 115 
+>    Snapshot 116 
+>    Snapshot 208 
+>    Snapshot 209 
+>    Snapshot 210 
+>    Snapshot 211 
+>    Snapshot 212 
+>    Snapshot 213 
+>    Snapshot 214 
+>    Snapshot 215 
+>    Snapshot 216 
+>    Snapshot 217 
+>    Snapshot 218 
+>    Snapshot 219 
+>    Snapshot 220 
+>    Snapshot 312 
+>    Snapshot 313 
+>    Snapshot 314 
+>    Snapshot 315 
+>    Snapshot 316 
+>    Snapshot 317 
+>    Snapshot 318 
+>    Snapshot 319 
+>    Snapshot 320 
+>    Snapshot 321 
+>    Snapshot 322 
+>    Snapshot 323 
+>    Snapshot 324 
+>    Snapshot 0 
+>    Snapshot 1 
+>    Snapshot 2 
+>    Snapshot 3 
+>    Snapshot 4 
+>    Snapshot 5 
+>    Snapshot 6 
+>    Snapshot 7 
+>    Snapshot 8 
+>    Snapshot 9 
+>    Snapshot 10 
+>    Snapshot 11 
+>    Snapshot 12 
+>    Snapshot 182 
+>    Snapshot 183 
+>    Snapshot 184 
+>    Snapshot 185 
+>    Snapshot 186 
+>    Snapshot 187 
+>    Snapshot 188 
+>    Snapshot 189 
+>    Snapshot 190 
+>    Snapshot 191 
+>    Snapshot 192 
+>    Snapshot 193 
+>    Snapshot 194 
+>    Snapshot 299 
+>    Snapshot 300 
+>    Snapshot 301 
+>    Snapshot 302 
+>    Snapshot 303 
+>    Snapshot 304 
+>    Snapshot 305 
+>    Snapshot 306 
+>    Snapshot 307 
+>    Snapshot 308 
+>    Snapshot 309 
+>    Snapshot 310 
+>    Snapshot 311 
+>    Snapshot 390 
+>    Snapshot 391 
+>    Snapshot 392 
+>    Snapshot 393 
+>    Snapshot 394 
+>    Snapshot 395 
+>    Snapshot 396 
+>    Snapshot 397 
+>    Snapshot 398 
+>    Snapshot 399 
+>    Snapshot 400 
+>    Snapshot 26 
+>    Snapshot 27 
+>    Snapshot 28 
+>    Snapshot 29 
+>    Snapshot 30 
+>    Snapshot 31 
+>    Snapshot 32 
+>    Snapshot 33 
+>    Snapshot 34 
+>    Snapshot 35 
+>    Snapshot 36 
+>    Snapshot 37 
+>    Snapshot 38 
+>    Snapshot 195 
+>    Snapshot 196 
+>    Snapshot 197 
+>    Snapshot 198 
+>    Snapshot 199 
+>    Snapshot 200 
+>    Snapshot 201 
+>    Snapshot 202 
+>    Snapshot 203 
+>    Snapshot 204 
+>    Snapshot 205 
+>    Snapshot 206 
+>    Snapshot 207 
+>    Snapshot 221 
+>    Snapshot 222 
+>    Snapshot 223 
+>    Snapshot 224 
+>    Snapshot 225 
+>    Snapshot 226 
+>    Snapshot 227 
+>    Snapshot 228 
+>    Snapshot 229 
+>    Snapshot 230 
+>    Snapshot 231 
+>    Snapshot 232 
+>    Snapshot 233 
+>    Snapshot 325 
+>    Snapshot 326 
+>    Snapshot 327 
+>    Snapshot 328 
+>    Snapshot 329 
+>    Snapshot 330 
+>    Snapshot 331 
+>    Snapshot 332 
+>    Snapshot 333 
+>    Snapshot 334 
+>    Snapshot 335 
+>    Snapshot 336 
+>    Snapshot 337 
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 152 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 147 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 144 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 136 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 147 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 150 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 143 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 149 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 155 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 165 stars outside the image
+WARNING: Reducing 1980 stars to m=1.923966007352802
+WARNING: 162 stars outside the image
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 167 stars outside the image
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 1 stars outside the image
+WARNING: 169 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 69 stars outside the image
+WARNING: 645 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 79 stars outside the image
+WARNING: 650 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 86 stars outside the image
+WARNING: 650 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 89 stars outside the image
+WARNING: 657 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 88 stars outside the image
+WARNING: 664 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 88 stars outside the image
+WARNING: 660 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 88 stars outside the image
+WARNING: 664 stars outside the image
+WARNING: Reducing 1842 stars to m=1.836935452823186
+WARNING: 86 stars outside the image
+WARNING: 672 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 85 stars outside the image
+WARNING: 671 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 84 stars outside the image
+WARNING: 670 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 77 stars outside the image
+WARNING: 672 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 66 stars outside the image
+WARNING: 674 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 57 stars outside the image
+WARNING: 667 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 8 stars outside the image
+WARNING: 895 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 888 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 896 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 910 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 930 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 946 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 969 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 989 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1014 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1038 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1067 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1085 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1123 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1709 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1706 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1704 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1705 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1699 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1693 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 7 stars outside the image
+WARNING: 1696 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1691 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1689 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1688 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1689 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1681 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1676 stars outside the image
+>    Snapshot 65 
+>    Snapshot 66 
+>    Snapshot 67 
+>    Snapshot 68 
+>    Snapshot 69 
+>    Snapshot 70 
+>    Snapshot 71 
+>    Snapshot 72 
+>    Snapshot 73 
+>    Snapshot 74 
+>    Snapshot 75 
+>    Snapshot 76 
+>    Snapshot 77 
+>    Snapshot 117 
+>    Snapshot 118 
+>    Snapshot 119 
+>    Snapshot 120 
+>    Snapshot 121 
+>    Snapshot 122 
+>    Snapshot 123 
+>    Snapshot 124 
+>    Snapshot 125 
+>    Snapshot 126 
+>    Snapshot 127 
+>    Snapshot 128 
+>    Snapshot 129 
+>    Snapshot 234 
+>    Snapshot 235 
+>    Snapshot 236 
+>    Snapshot 237 
+>    Snapshot 238 
+>    Snapshot 239 
+>    Snapshot 240 
+>    Snapshot 241 
+>    Snapshot 242 
+>    Snapshot 243 
+>    Snapshot 244 
+>    Snapshot 245 
+>    Snapshot 246 
+>    Snapshot 338 
+>    Snapshot 339 
+>    Snapshot 340 
+>    Snapshot 341 
+>    Snapshot 342 
+>    Snapshot 343 
+>    Snapshot 344 
+>    Snapshot 345 
+>    Snapshot 346 
+>    Snapshot 347 
+>    Snapshot 348 
+>    Snapshot 349 
+>    Snapshot 350 
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 1 stars outside the image
+WARNING: 183 stars outside the image
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 1 stars outside the image
+WARNING: 200 stars outside the image
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 1 stars outside the image
+WARNING: 221 stars outside the image
+WARNING: Reducing 1936 stars to m=1.923966007352802
+WARNING: 1 stars outside the image
+WARNING: 235 stars outside the image
+WARNING: Reducing 2055 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 241 stars outside the image
+WARNING: Reducing 2055 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 247 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 259 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 266 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 267 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 286 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 297 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 305 stars outside the image
+WARNING: Reducing 2029 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 308 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 86 stars outside the image
+WARNING: 1000 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 79 stars outside the image
+WARNING: 999 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 73 stars outside the image
+WARNING: 991 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 69 stars outside the image
+WARNING: 977 stars outside the image
+WARNING: Reducing 1650 stars to m=1.836935452823186
+WARNING: 62 stars outside the image
+WARNING: 975 stars outside the image
+WARNING: Reducing 1650 stars to m=1.836935452823186
+WARNING: 57 stars outside the image
+WARNING: 958 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 51 stars outside the image
+WARNING: 952 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 44 stars outside the image
+WARNING: 954 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 39 stars outside the image
+WARNING: 945 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 28 stars outside the image
+WARNING: 939 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 25 stars outside the image
+WARNING: 932 stars outside the image
+WARNING: Reducing 1649 stars to m=1.836935452823186
+WARNING: 18 stars outside the image
+WARNING: 924 stars outside the image
+WARNING: Reducing 1636 stars to m=1.836935452823186
+WARNING: 13 stars outside the image
+WARNING: 913 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1149 stars outside the image
+WARNING: Reducing 1623 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1179 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1196 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 1218 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 1229 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 1253 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 1284 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 6 stars outside the image
+WARNING: 1313 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 1326 stars outside the image
+WARNING: Reducing 1607 stars to m=1.836935452823186
+WARNING: 9 stars outside the image
+WARNING: 1337 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 9 stars outside the image
+WARNING: 1338 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 8 stars outside the image
+WARNING: 1348 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 9 stars outside the image
+WARNING: 1352 stars outside the image
+WARNING: Reducing 1621 stars to m=1.7549408503937518
+WARNING: 7 stars outside the image
+WARNING: 1672 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 8 stars outside the image
+WARNING: 1673 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 9 stars outside the image
+WARNING: 1663 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 12 stars outside the image
+WARNING: 1659 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 13 stars outside the image
+WARNING: 1654 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 14 stars outside the image
+WARNING: 1641 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 14 stars outside the image
+WARNING: 1628 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 14 stars outside the image
+WARNING: 1619 stars outside the image
+WARNING: Reducing 1609 stars to m=1.7549408503937518
+WARNING: 14 stars outside the image
+WARNING: 1619 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 13 stars outside the image
+WARNING: 1618 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 12 stars outside the image
+WARNING: 1608 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 12 stars outside the image
+WARNING: 1601 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 9 stars outside the image
+WARNING: 1591 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 161 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 158 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 155 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 158 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 157 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 154 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 152 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 154 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 154 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 149 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 145 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 144 stars outside the image
+WARNING: Reducing 2045 stars to m=1.923966007352802
+WARNING: 149 stars outside the image
+WARNING: Reducing 1689 stars to m=1.836935452823186
+WARNING: 186 stars outside the image
+WARNING: 1055 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 178 stars outside the image
+WARNING: 1055 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 169 stars outside the image
+WARNING: 1057 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 156 stars outside the image
+WARNING: 1058 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 151 stars outside the image
+WARNING: 1053 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 142 stars outside the image
+WARNING: 1047 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 135 stars outside the image
+WARNING: 1046 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 129 stars outside the image
+WARNING: 1047 stars outside the image
+WARNING: Reducing 1675 stars to m=1.836935452823186
+WARNING: 123 stars outside the image
+WARNING: 1040 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 119 stars outside the image
+WARNING: 1032 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 114 stars outside the image
+WARNING: 1016 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 105 stars outside the image
+WARNING: 1013 stars outside the image
+WARNING: Reducing 1664 stars to m=1.836935452823186
+WARNING: 98 stars outside the image
+WARNING: 1005 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 3 stars outside the image
+WARNING: 1684 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1696 stars outside the image
+WARNING: Reducing 1642 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1703 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1708 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1711 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 4 stars outside the image
+WARNING: 1714 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 5 stars outside the image
+WARNING: 1714 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1713 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1714 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1714 stars outside the image
+WARNING: Reducing 1631 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1717 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1718 stars outside the image
+WARNING: Reducing 1628 stars to m=1.7549408503937518
+WARNING: 6 stars outside the image
+WARNING: 1708 stars outside the image
+WARNING: Reducing 1557 stars to m=1.7549408503937518
+WARNING: 57 stars outside the image
+WARNING: 1975 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 64 stars outside the image
+WARNING: 1970 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 66 stars outside the image
+WARNING: 1959 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 64 stars outside the image
+WARNING: 1946 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 65 stars outside the image
+WARNING: 1937 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 66 stars outside the image
+WARNING: 1933 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 62 stars outside the image
+WARNING: 1927 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 65 stars outside the image
+WARNING: 1925 stars outside the image
+WARNING: Reducing 1553 stars to m=1.7549408503937518
+WARNING: 65 stars outside the image
+WARNING: 1925 stars outside the image
+WARNING: Reducing 1539 stars to m=1.7549408503937518
+WARNING: 64 stars outside the image
+WARNING: 1921 stars outside the image
+WARNING: Reducing 1539 stars to m=1.7549408503937518
+WARNING: 59 stars outside the image
+WARNING: 1912 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 264 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 255 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 244 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 236 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 233 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 228 stars outside the image
+WARNING: Reducing 1936 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 234 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 234 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 240 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 246 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 261 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 276 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 1 stars outside the image
+WARNING: 289 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 52 stars outside the image
+WARNING: 660 stars outside the image
+WARNING: Reducing 1824 stars to m=1.836935452823186
+WARNING: 45 stars outside the image
+WARNING: 650 stars outside the image
+WARNING: Reducing 1804 stars to m=1.836935452823186
+WARNING: 34 stars outside the image
+WARNING: 644 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 26 stars outside the image
+WARNING: 647 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 17 stars outside the image
+WARNING: 645 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 12 stars outside the image
+WARNING: 650 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 8 stars outside the image
+WARNING: 648 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 651 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 647 stars outside the image
+WARNING: Reducing 1800 stars to m=1.836935452823186
+WARNING: 7 stars outside the image
+WARNING: 640 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 636 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 634 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 631 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 10 stars outside the image
+WARNING: 1362 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 11 stars outside the image
+WARNING: 1374 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 12 stars outside the image
+WARNING: 1379 stars outside the image
+WARNING: Reducing 1595 stars to m=1.836935452823186
+WARNING: 17 stars outside the image
+WARNING: 1381 stars outside the image
+WARNING: Reducing 1593 stars to m=1.836935452823186
+WARNING: 17 stars outside the image
+WARNING: 1374 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 22 stars outside the image
+WARNING: 1378 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 25 stars outside the image
+WARNING: 1375 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 28 stars outside the image
+WARNING: 1378 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 38 stars outside the image
+WARNING: 1379 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 40 stars outside the image
+WARNING: 1372 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 45 stars outside the image
+WARNING: 1369 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 47 stars outside the image
+WARNING: 1376 stars outside the image
+WARNING: Reducing 1584 stars to m=1.836935452823186
+WARNING: 51 stars outside the image
+WARNING: 1364 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 10 stars outside the image
+WARNING: 1567 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 8 stars outside the image
+WARNING: 1563 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 10 stars outside the image
+WARNING: 1556 stars outside the image
+WARNING: Reducing 1602 stars to m=1.7549408503937518
+WARNING: 11 stars outside the image
+WARNING: 1551 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 16 stars outside the image
+WARNING: 1555 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 20 stars outside the image
+WARNING: 1576 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 25 stars outside the image
+WARNING: 1590 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 26 stars outside the image
+WARNING: 1611 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 29 stars outside the image
+WARNING: 1633 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 35 stars outside the image
+WARNING: 1649 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 40 stars outside the image
+WARNING: 1687 stars outside the image
+WARNING: Reducing 1597 stars to m=1.7549408503937518
+WARNING: 47 stars outside the image
+WARNING: 1716 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 51 stars outside the image
+WARNING: 1747 stars outside the image
+>    Snapshot 78 
+>    Snapshot 79 
+>    Snapshot 80 
+>    Snapshot 81 
+>    Snapshot 82 
+>    Snapshot 83 
+>    Snapshot 84 
+>    Snapshot 85 
+>    Snapshot 86 
+>    Snapshot 87 
+>    Snapshot 88 
+>    Snapshot 89 
+>    Snapshot 90 
+>    Snapshot 130 
+>    Snapshot 131 
+>    Snapshot 132 
+>    Snapshot 133 
+>    Snapshot 134 
+>    Snapshot 135 
+>    Snapshot 136 
+>    Snapshot 137 
+>    Snapshot 138 
+>    Snapshot 139 
+>    Snapshot 140 
+>    Snapshot 141 
+>    Snapshot 142 
+>    Snapshot 247 
+>    Snapshot 248 
+>    Snapshot 249 
+>    Snapshot 250 
+>    Snapshot 251 
+>    Snapshot 252 
+>    Snapshot 253 
+>    Snapshot 254 
+>    Snapshot 255 
+>    Snapshot 256 
+>    Snapshot 257 
+>    Snapshot 258 
+>    Snapshot 259 
+>    Snapshot 351 
+>    Snapshot 352 
+>    Snapshot 353 
+>    Snapshot 354 
+>    Snapshot 355 
+>    Snapshot 356 
+>    Snapshot 357 
+>    Snapshot 358 
+>    Snapshot 359 
+>    Snapshot 360 
+>    Snapshot 361 
+>    Snapshot 362 
+>    Snapshot 363 
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 310 stars outside the image
+WARNING: Reducing 1911 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 331 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 351 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 373 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 396 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 420 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 452 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 467 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 493 stars outside the image
+WARNING: Reducing 1893 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 505 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 522 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 542 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 562 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 622 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 605 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 6 stars outside the image
+WARNING: 596 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 6 stars outside the image
+WARNING: 587 stars outside the image
+WARNING: Reducing 1782 stars to m=1.836935452823186
+WARNING: 6 stars outside the image
+WARNING: 591 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 5 stars outside the image
+WARNING: 584 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 574 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 577 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 581 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 578 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 580 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 572 stars outside the image
+WARNING: Reducing 1761 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 571 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 55 stars outside the image
+WARNING: 1363 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 55 stars outside the image
+WARNING: 1359 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 55 stars outside the image
+WARNING: 1361 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 56 stars outside the image
+WARNING: 1362 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 59 stars outside the image
+WARNING: 1366 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 58 stars outside the image
+WARNING: 1365 stars outside the image
+WARNING: Reducing 1565 stars to m=1.836935452823186
+WARNING: 51 stars outside the image
+WARNING: 1366 stars outside the image
+WARNING: Reducing 1559 stars to m=1.836935452823186
+WARNING: 50 stars outside the image
+WARNING: 1367 stars outside the image
+WARNING: Reducing 1554 stars to m=1.836935452823186
+WARNING: 48 stars outside the image
+WARNING: 1369 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 45 stars outside the image
+WARNING: 1356 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 44 stars outside the image
+WARNING: 1355 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 43 stars outside the image
+WARNING: 1352 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 42 stars outside the image
+WARNING: 1343 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 50 stars outside the image
+WARNING: 1767 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 53 stars outside the image
+WARNING: 1788 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 52 stars outside the image
+WARNING: 1806 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 54 stars outside the image
+WARNING: 1829 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 54 stars outside the image
+WARNING: 1846 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 54 stars outside the image
+WARNING: 1862 stars outside the image
+WARNING: Reducing 1593 stars to m=1.7549408503937518
+WARNING: 57 stars outside the image
+WARNING: 1880 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 59 stars outside the image
+WARNING: 1890 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 59 stars outside the image
+WARNING: 1907 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 73 stars outside the image
+WARNING: 1928 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 75 stars outside the image
+WARNING: 1944 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 82 stars outside the image
+WARNING: 1956 stars outside the image
+WARNING: Reducing 1584 stars to m=1.7549408503937518
+WARNING: 87 stars outside the image
+WARNING: 1974 stars outside the image
+>    Snapshot 91 
+>    Snapshot 92 
+>    Snapshot 93 
+>    Snapshot 94 
+>    Snapshot 95 
+>    Snapshot 96 
+>    Snapshot 97 
+>    Snapshot 98 
+>    Snapshot 99 
+>    Snapshot 100 
+>    Snapshot 101 
+>    Snapshot 102 
+>    Snapshot 103 
+>    Snapshot 143 
+>    Snapshot 144 
+>    Snapshot 145 
+>    Snapshot 146 
+>    Snapshot 147 
+>    Snapshot 148 
+>    Snapshot 149 
+>    Snapshot 150 
+>    Snapshot 151 
+>    Snapshot 152 
+>    Snapshot 153 
+>    Snapshot 154 
+>    Snapshot 155 
+>    Snapshot 260 
+>    Snapshot 261 
+>    Snapshot 262 
+>    Snapshot 263 
+>    Snapshot 264 
+>    Snapshot 265 
+>    Snapshot 266 
+>    Snapshot 267 
+>    Snapshot 268 
+>    Snapshot 269 
+>    Snapshot 270 
+>    Snapshot 271 
+>    Snapshot 272 
+>    Snapshot 377 
+>    Snapshot 378 
+>    Snapshot 379 
+>    Snapshot 380 
+>    Snapshot 381 
+>    Snapshot 382 
+>    Snapshot 383 
+>    Snapshot 384 
+>    Snapshot 385 
+>    Snapshot 386 
+>    Snapshot 387 
+>    Snapshot 388 
+>    Snapshot 389 
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 579 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 592 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 605 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 608 stars outside the image
+WARNING: Reducing 1875 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 609 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 6 stars outside the image
+WARNING: 626 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 12 stars outside the image
+WARNING: 636 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 21 stars outside the image
+WARNING: 635 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 32 stars outside the image
+WARNING: 635 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 38 stars outside the image
+WARNING: 635 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 42 stars outside the image
+WARNING: 642 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 50 stars outside the image
+WARNING: 641 stars outside the image
+WARNING: Reducing 1851 stars to m=1.836935452823186
+WARNING: 62 stars outside the image
+WARNING: 645 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 570 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 592 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 607 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 618 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 2 stars outside the image
+WARNING: 642 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 664 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 694 stars outside the image
+WARNING: Reducing 1739 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 717 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 746 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 779 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 808 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 3 stars outside the image
+WARNING: 828 stars outside the image
+WARNING: Reducing 1725 stars to m=1.836935452823186
+WARNING: 4 stars outside the image
+WARNING: 860 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 34 stars outside the image
+WARNING: 1343 stars outside the image
+WARNING: Reducing 1553 stars to m=1.836935452823186
+WARNING: 33 stars outside the image
+WARNING: 1333 stars outside the image
+WARNING: Reducing 1541 stars to m=1.836935452823186
+WARNING: 38 stars outside the image
+WARNING: 1321 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 36 stars outside the image
+WARNING: 1311 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 39 stars outside the image
+WARNING: 1306 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 43 stars outside the image
+WARNING: 1296 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 40 stars outside the image
+WARNING: 1287 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 40 stars outside the image
+WARNING: 1275 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 43 stars outside the image
+WARNING: 1261 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 45 stars outside the image
+WARNING: 1243 stars outside the image
+WARNING: Reducing 1680 stars to m=1.7549408503937518
+WARNING: 44 stars outside the image
+WARNING: 1236 stars outside the image
+WARNING: Reducing 1666 stars to m=1.7549408503937518
+WARNING: 43 stars outside the image
+WARNING: 1233 stars outside the image
+WARNING: Reducing 1666 stars to m=1.7549408503937518
+WARNING: 39 stars outside the image
+WARNING: 1227 stars outside the image
+WARNING: Reducing 1567 stars to m=1.7549408503937518
+WARNING: 68 stars outside the image
+WARNING: 2014 stars outside the image
+WARNING: Reducing 1567 stars to m=1.7549408503937518
+WARNING: 64 stars outside the image
+WARNING: 2016 stars outside the image
+WARNING: Reducing 1567 stars to m=1.7549408503937518
+WARNING: 58 stars outside the image
+WARNING: 2010 stars outside the image
+WARNING: Reducing 1567 stars to m=1.7549408503937518
+WARNING: 58 stars outside the image
+WARNING: 2013 stars outside the image
+WARNING: Reducing 1567 stars to m=1.7549408503937518
+WARNING: 56 stars outside the image
+WARNING: 2010 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 55 stars outside the image
+WARNING: 2009 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 57 stars outside the image
+WARNING: 2000 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 57 stars outside the image
+WARNING: 1994 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 51 stars outside the image
+WARNING: 1993 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 52 stars outside the image
+WARNING: 1991 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 55 stars outside the image
+WARNING: 1985 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 55 stars outside the image
+WARNING: 1982 stars outside the image
+WARNING: Reducing 1561 stars to m=1.7549408503937518
+WARNING: 54 stars outside the image
+WARNING: 1984 stars outside the image
+>    Snapshot 39 
+>    Snapshot 40 
+>    Snapshot 41 
+>    Snapshot 42 
+>    Snapshot 43 
+>    Snapshot 44 
+>    Snapshot 45 
+>    Snapshot 46 
+>    Snapshot 47 
+>    Snapshot 48 
+>    Snapshot 49 
+>    Snapshot 50 
+>    Snapshot 51 
+>    Snapshot 169 
+>    Snapshot 170 
+>    Snapshot 171 
+>    Snapshot 172 
+>    Snapshot 173 
+>    Snapshot 174 
+>    Snapshot 175 
+>    Snapshot 176 
+>    Snapshot 177 
+>    Snapshot 178 
+>    Snapshot 179 
+>    Snapshot 180 
+>    Snapshot 181 
+>    Snapshot 273 
+>    Snapshot 274 
+>    Snapshot 275 
+>    Snapshot 276 
+>    Snapshot 277 
+>    Snapshot 278 
+>    Snapshot 279 
+>    Snapshot 280 
+>    Snapshot 281 
+>    Snapshot 282 
+>    Snapshot 283 
+>    Snapshot 284 
+>    Snapshot 285 
+>    Snapshot 364 
+>    Snapshot 365 
+>    Snapshot 366 
+>    Snapshot 367 
+>    Snapshot 368 
+>    Snapshot 369 
+>    Snapshot 370 
+>    Snapshot 371 
+>    Snapshot 372 
+>    Snapshot 373 
+>    Snapshot 374 
+>    Snapshot 375 
+>    Snapshot 376 
+43999 orbits complete (4.4e+04 orbits/s)
+43999 orbits complete (inf orbits/s)

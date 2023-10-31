@@ -1,0 +1,42 @@
+ArtPop_movie_interp.py:52: VisibleDeprecationWarning: Reading unicode strings without specifying the encoding argument is deprecated. Set the encoding, use None for the system default.
+  data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+failed to get the current screen resources
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1654 requests (1630 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1638 requests (1630 known processed) with 0 events remaining.
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+QXcbConnection: Could not connect to display localhost:10.0
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1638 requests (1630 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1638 requests (1630 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1638 requests (1630 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1680 requests (1672 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1680 requests (1672 known processed) with 0 events remaining.
+The X11 connection broke: I/O error (code 1)
+XIO:  fatal IO error 0 (Success) on X server "localhost:10.0"
+      after 1680 requests (1672 known processed) with 0 events remaining.
