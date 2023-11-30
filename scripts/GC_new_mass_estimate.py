@@ -21,7 +21,7 @@ from scipy.interpolate import BSpline, make_interp_spline
 
 # Load the property dictionary:
 #------------------------------------------------------------
-with open('./files/GC_data.pk1', 'rb') as f:
+with open('./files/GC_data_enhanced_mass_suite.pk1', 'rb') as f:
   GC_data = pickle.load(f)
 #------------------------------------------------------------
 
@@ -51,7 +51,7 @@ for sim in list(GC_data.keys()):
   # Locate the time that the GC was recovered from EDGE:
   EDGE_halo = sim.split('/')[-1].split('_')[0]
   EDGE_sim = sim.split('/')[-1].split('_output')[0]
-  EDGE_output = sim.split('/')[-1].split('_')[4]
+  EDGE_output = sim.split('/')[-1].split('_')[3]
   tangos.core.init_db(TANGOS_path + EDGE_halo + '.db')
   session = tangos.core.get_default_session()
   timestep = int(np.where([EDGE_output in i.extension for i in tangos.get_simulation(EDGE_sim).timesteps])[0])
@@ -101,8 +101,8 @@ plt.ylabel('Hmr multiplier')
 count_ID = np.array(count_ID)
 sorted = np.argsort(count_ID)
 count_ID = count_ID[sorted]
-mass_multiplier = mass_multiplier[sorted]
-hmr_multiplier = hmr_multiplier[sorted]
+mass_multiplier = np.ravel(mass_multiplier[sorted])
+hmr_multiplier = np.ravel(hmr_multiplier[sorted])
 ts = ts[sorted]
-#np.savetxt('./files/GC_multipliers.txt', np.transpose([count_ID, mass_multiplier, hmr_multiplier, ts]), \
+#np.savetxt('./files/GC_multipliers_CHIMERA_massive.txt', np.transpose([count_ID, mass_multiplier, hmr_multiplier, ts]), \
 #           fmt='%i\t%f\t%f\t%f', header='Simulation\tMass_mult\thmr_mult\tdelta(t)', delimiter='\t')

@@ -9,8 +9,8 @@ plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = 'Halo624_fiducial_hires_output_00017_21'
-s = read_nbody6(path+sim_name, df=True)
+sim_name = ''
+s = read_nbody6(path+'/'+sim_name, df=True)
 #------------------------------------------------------------
 
 # Orbit, mass, size:

@@ -170,6 +170,6 @@ def read_nbody6(file, df=False):
     simulation.append(snapshot)
     first = False
 
-    if snapshot['age'] > 200: break  ####
+    #if snapshot['age'] > 200: break  ####
 
   return simulation

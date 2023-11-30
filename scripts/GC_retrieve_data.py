@@ -17,7 +17,8 @@ from scipy.interpolate import BSpline, make_interp_spline
 #------------------------------------------------------------
 suite = ''
 sims = glob(path + '/' + suite + '/Halo*')
-data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+suite = 'CHIMERA_massive_suite'
+data = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
 GC_ID = np.array([i[15] for i in data])
 GC_birthtime = np.array([i[8] for i in data]) # Myr
 
@@ -27,7 +28,7 @@ overwrite = False
 
 # Load the property dictionary:
 #------------------------------------------------------------
-with open('./files/GC_data%s.pk1' % suite, 'rb') as f:
+with open('./files/GC_data_%s.pk1' % suite, 'rb') as f:
   GC_data = pickle.load(f)
 #------------------------------------------------------------
 
@@ -35,26 +36,34 @@ with open('./files/GC_data%s.pk1' % suite, 'rb') as f:
 #------------------------------------------------------------
 for sim in sims:
 
-  if (sim.split('/')[-1] in list(GC_data.keys())) & \
-     (GC_data[sim.split('/')[-1]]['t'][-1] <= 13.7) & \
+  ID = int(''.join(c for c in sim.split('_')[-1] if c.isdigit()))
+  birthtime = GC_birthtime[np.where(GC_ID == ID)[0][0]]
+
+  if sim.split('/')[-1] not in list(GC_data.keys()):
+    GC_data[sim.split('/')[-1]] = {}
+    print('>    Creating new data entry.')
+  elif not len(GC_data[sim.split('/')[-1]]):
+    print('>    Creating new data entry.')
+  # Remember to change 0.3 back to 13.8!
+  elif (sim.split('/')[-1] in list(GC_data.keys())) & \
+     (GC_data[sim.split('/')[-1]]['t'][-1] <= (0.3+birthtime)) & \
      (GC_data[sim.split('/')[-1]]['mass'][-1] >= 1e3):
     print('>    Updating data entry on %s...' % sim.split('/')[-1])
     pass
   elif (sim.split('/')[-1] in list(GC_data.keys())) & (not overwrite):
     print('>    Data entry already exists.')
     continue
-  else:
-    GC_data[sim.split('/')[-1]] = {}
-    print('>    Creating new data entry.')
 
   time_step1 = time.time()
-  s = read_nbody6(sim, df=True)
+  try:
+    s = read_nbody6(sim, df=True)
+  except:
+    print('>    Data entry has no outputs.')
+    continue
   sim = sim.split('/')[-1]
 
   # Load the starting time:
-  ID = int(''.join(c for c in sim.split('_')[-1] if c.isdigit()))
   print('>    %i' % ID, end='')
-  birthtime = GC_birthtime[np.where(GC_ID == ID)[0][0]]
 
   # Initialise property arrays:
   GC_properties = ['t', 'rg', 'vg', 'cum_orb', 'mass', 'mtot', 'hlr', 'hmr', 'mV', 'mV_hlr', 'mV_hmr']
@@ -68,7 +77,6 @@ for sim in sims:
 
     if GC_data[sim]['t'][i] == (birthtime + s[i]['age']) / 1e3:
       continue
-    print(i)
 
     # Get the simulation time:
     GC_data[sim]['t'][i] = (birthtime + s[i]['age']) / 1e3 # Gyr [?]
@@ -145,8 +153,7 @@ for sim in sims:
     GC_data[sim]['cum_orb'] -= GC_data[sim]['cum_orb'][0]
 
   print('Saving...')
-  with open('./files/GC_data%s.pk1' %suite, 'wb') as f:
+  with open('./files/GC_data_%s.pk1' %suite, 'wb') as f:
     pickle.dump(GC_data, f)
-  print(1/0)
 #------------------------------------------------------------
 

@@ -23,7 +23,7 @@ save_results = True
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
-data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
+data = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
 
 GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
 GC_vel = np.array([data[4], data[5], data[6]]) # km s^-1
@@ -39,9 +39,9 @@ count_ID = int(data[15])
 
 print('>    %i' % count_ID)
 
-if GC_hlr <= 15:
-  print('This GC is too diffuse.')
-  sys.exit(0)
+#if GC_hlr <= 15:
+#  print('This GC is too diffuse.')
+#  sys.exit(0)
 #--------------------------------------------------------------------------
 
 # Load the simulation snapshot:
@@ -50,19 +50,18 @@ tangos.core.init_db(TANGOS_path + EDGE_sim_name.split('_')[0] + '.db')
 session = tangos.core.get_default_session()
 
 h = tangos.get_halo(('/').join([EDGE_sim_name, EDGE_output, 'halo_%i' % EDGE_halo]))
-if np.linalg.norm(GC_pos)/1e3 > h['r200c']*1.1:
+if np.linalg.norm(GC_pos)/1e3 > 40.:
   print('The GC position is beyond the R200 radius. Do not simulate.')
   sys.exit(0)
 
 # Get EDGE simulation density, averaged over next 3 simulation snapshots:
-nmax = 3
-EDGE_rho, EDGE_r = h.previous.calculate_for_descendants('dm_density_profile', 'rbins_profile', nmax=nmax)
-for matter in ['gas', 'stars']:
-  if f'{matter}_density_profile' in h.keys():
-    EDGE_rho += h.previous.calculate_for_descendants(f'{matter}_density_profile', nmax=nmax)[0]
+data1 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
+data2 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
+data3 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
+EDGE_r = np.mean([data1[0], data2[0], data3[0]], axis=0)
+EDGE_rho = np.mean([data1[1], data2[1], data3[1]], axis=0)
 
 # Rebin the density:
-N_bins = 200
 r_min = 0.03
 r_max = 3
 fit_min = 0.1
@@ -73,12 +72,6 @@ if np.linalg.norm(GC_pos)/1e3 > fit_max:
 elif np.linalg.norm(GC_pos)/1e3 < fit_min:
   print('GC position is less that fit_min, %.2f kpc.' % fit_min)
 
-new_r = np.logspace(np.log10(r_min), np.log10(r_max), N_bins)
-
-for i in range(nmax + 1):
-  EDGE_r[i], EDGE_rho[i] = func.rebin(EDGE_r[i], EDGE_rho[i], new_r)
-EDGE_rho = np.median(list(EDGE_rho), axis=0)
-EDGE_r = EDGE_r[0]
 fit_range = (EDGE_r > fit_min) & (EDGE_r <= fit_max)
 
 print(f'>    Loaded EDGE density profile for {EDGE_sim_name}, {EDGE_output}.')
@@ -87,14 +80,14 @@ print(f'>    Loaded EDGE density profile for {EDGE_sim_name}, {EDGE_output}.')
 # Scale the mass according to the stellar mass evolution and
 # the time between GC birth and EDGE snapshot:
 #--------------------------------------------------------------------------
-'''
+#'''
 time_difference = (h.calculate('t()')*1e3) - GC_birthtime
-count_IDs, mass_mults, hmr_mults, _ = np.loadtxt('./files/GC_multipliers.txt', unpack=True)
+count_IDs, mass_mults, hmr_mults, _ = np.loadtxt('./files/GC_multipliers_CHIMERA_massive.txt', unpack=True)
 mass_mult = mass_mults[count_IDs == count_ID]
 hmr_mult = hmr_mults[count_IDs == count_ID]
 GC_mass *= mass_mult
 GC_hlr *= min(max(hmr_mult, 0.7), 1.0)
-'''
+#'''
 #--------------------------------------------------------------------------
 
 # Reconstruct the potential at this time:
@@ -139,7 +132,7 @@ if plot_fit:
   ax.loglog(EDGE_r, EDGE_rho, 'k', lw=2, label='%s, %s' % (EDGE_sim_name, EDGE_output))
   ax.axvline(np.linalg.norm(GC_pos/1e3), c='k', lw=1)
 
-  label = r'Fit %i: ' % i + \
+  label = r'Fit %i: ' % 0 + \
           r'$r_{\rm s}=%.2f$, ' % (rs) + \
           r'$M_{\rm g}=%s\,$M$_{\odot}$, ' % func.latex_float(Mg) + \
           r'$\gamma=%.2g$' % gamma

@@ -39,9 +39,9 @@ import agama
 # Load chosen simulation:
 #------------------------------------------------------------
 # Timestep for interpolation:
-t_min = 0 # [Myr]
-t_max = 40 # [Myr]
-delta_t = 0.5 # [Myr]
+t_min = 1410-929.2797161904183 # [Myr]
+t_max = 1430-929.2797161904183 # [Myr]
+delta_t = 1 # [Myr]
 
 suite = 'enhanced_mass_suite'
 #suite = ''

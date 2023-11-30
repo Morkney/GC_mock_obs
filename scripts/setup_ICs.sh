@@ -1,8 +1,10 @@
 #!/bin/bash
 
-#for file in ../Nbody6_sims/files/Halo*; do
-inputs=("../Nbody6_sims/files/Halo605_fiducial_hires_output_00026_43.txt")
-for file in "${inputs[@]}"; do
+GPU=0
+
+#inputs=("../Nbody6_sims/files/Halo383_Massive_output_00014_123.txt")
+#for file in "${inputs[@]}"; do
+for file in ../Nbody6_sims/files/Halo*; do
   echo $file
   directory=${file%".txt"}
   directory=${directory/files\/}
@@ -23,6 +25,11 @@ for file in "${inputs[@]}"; do
 
   # Copy components into directory:
   cp ../sim_template/* $directory
+
+  # Define the GPU number:
+  sed -i "2s/.*/export GPU_LIST=\"${GPU}\"/" $directory/run.sh
+  sed -i "2s/.*/export GPU_LIST=\"${GPU}\"/" $directory/restart.sh
+
   # Plummer profile, no segregation, Kroupa (2001) IMF, astrophysical output, stellar mass in range 0.08-100.
   MASS=$(sed -n 1p $file) # Mass of star cluster [Msol]
   HMR=$(sed -n 2p $file)  # Half-mass radius [pc]
@@ -44,5 +51,9 @@ for file in "${inputs[@]}"; do
   sed -i "7s/.*/0 0 0 2 1 0 0 2 0 3/" $directory/GC_IC.input
 
   echo Built $directory
+
+  # Reset GPU:
+  GPU=$(( GPU+1 ))
+  if [ $GPU -eq 4 ]; then GPU=0; fi
 
 done
