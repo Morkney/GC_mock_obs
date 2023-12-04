@@ -9,7 +9,7 @@ plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = ''
+sim_name = 'Halo383_Massive_output_00036_126'
 s = read_nbody6(path+'/'+sim_name, df=True)
 #------------------------------------------------------------
 

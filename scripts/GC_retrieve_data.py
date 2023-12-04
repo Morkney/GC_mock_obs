@@ -23,7 +23,7 @@ GC_ID = np.array([i[15] for i in data])
 GC_birthtime = np.array([i[8] for i in data]) # Myr
 
 lum_max = 100 # Lsol
-overwrite = False
+overwrite = True
 #------------------------------------------------------------
 
 # Load the property dictionary:
