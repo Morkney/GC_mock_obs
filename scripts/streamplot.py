@@ -38,8 +38,8 @@ GC_data.update(GC_data3)
 
 # Make a stream plot:
 #--------------------------------------------------------------------
-plot_type = 't'
-stat_type = 'STD'
+plot_type = 'mass'
+stat_type = 'mean'
 if (plot_type=='mass') & (stat_type=='mean'):
   c_min = 2.5
   c_max = 4.25
@@ -90,7 +90,8 @@ density[density < 0] = 0
 
 fs = 12
 fig, ax = plt.subplots(figsize=(6,6))
-ax.streamplot(X,Y, vx,vy, density=2.25, color=colour, linewidth=density, norm=cnorm, cmap=cmap, minlength=0.2)
+#ax.streamplot(X,Y, vx,vy, density=2.25, color=colour, linewidth=density, norm=cnorm, cmap=cmap, minlength=0.2)
+ax.streamplot(X,Y, vx,vy, density=2.2, color=colour, linewidth=density, norm=cnorm, cmap=cmap, minlength=0.2)
 
 ax.tick_params(axis='both', labelsize=fs-2)
 

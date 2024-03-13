@@ -8,22 +8,34 @@ import sys
 
 from lmfit import Parameters, Model
 
+import default_setup
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt, matplotlib.patches as patches
-plt.ioff()
+plt.ion()
 
 # Enter EDGE1 to terminal to load pynbody modules
 
+# Simulation choices:
+#--------------------------------------------------------------------------
+profile_types = ('DM', 'Full', 'fantasy_core')
+profile_type = profile_types[0]
+binary_fractions = (0, 0.95)
+binary_fraction = binary_fractions[0]
+#--------------------------------------------------------------------------
+
+# Parameters:
+#--------------------------------------------------------------------------
 GC_ID = int(sys.argv[1])
 plot_fit = True
 save_results = True
+#--------------------------------------------------------------------------
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
-data = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
+data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
 
 GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
 GC_vel = np.array([data[4], data[5], data[6]]) # km s^-1
@@ -38,10 +50,6 @@ internal_ID = int(data[14])
 count_ID = int(data[15])
 
 print('>    %i' % count_ID)
-
-#if GC_hlr <= 15:
-#  print('This GC is too diffuse.')
-#  sys.exit(0)
 #--------------------------------------------------------------------------
 
 # Load the simulation snapshot:
@@ -55,30 +63,34 @@ if np.linalg.norm(GC_pos)/1e3 > 40.:
   sys.exit(0)
 
 # Get EDGE simulation density, averaged over next 3 simulation snapshots:
-data1 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
-data2 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
-data3 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
-EDGE_r = np.mean([data1[0], data2[0], data3[0]], axis=0)
-EDGE_rho = np.mean([data1[1], data2[1], data3[1]], axis=0)
+r_range = (0.02, 10)
+fit_range = (0.035, 3)
+if 'CHIMERA' in EDGE_sim_name:
+  data1 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
+  data2 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
+  data3 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
+  EDGE_r = np.mean([data1[0], data2[0], data3[0]], axis=0)
+  EDGE_rho = np.mean([data1[1], data2[1], data3[1]], axis=0)
+else:
+  EDGE_r, EDGE_rho = h.previous.calculate_for_descendants('rbins_profile', 'dm_density_profile', nmax=2)
+  r = np.logspace(*np.log10(r_range), 100)
+  for i in range(3):
+    EDGE_r[i], EDGE_rho[i] = func.rebin(EDGE_r[i], EDGE_rho[i], r)
+  EDGE_r = EDGE_r[0]
+  EDGE_rho = np.mean(EDGE_rho, axis=0)
 
-# Rebin the density:
-r_min = 0.03
-r_max = 3
-fit_min = 0.1
-fit_max = 1
-
-if np.linalg.norm(GC_pos)/1e3 > fit_max:
-  print('GC position is greater that fit_max, %.2f kpc.' % fit_max)
-elif np.linalg.norm(GC_pos)/1e3 < fit_min:
-  print('GC position is less that fit_min, %.2f kpc.' % fit_min)
-
-fit_range = (EDGE_r > fit_min) & (EDGE_r <= fit_max)
+if np.linalg.norm(GC_pos)/1e3 > fit_range[1]:
+  print('GC position is greater that fit_max, %.2f kpc.' % fit_range[1])
+elif np.linalg.norm(GC_pos)/1e3 < fit_range[0]:
+  print('GC position is less that fit_min, %.2f kpc.' % fit_range[0])
+fit_range_arr = (EDGE_r > fit_range[0]) & (EDGE_r <= fit_range[1])
 
 print(f'>    Loaded EDGE density profile for {EDGE_sim_name}, {EDGE_output}.')
 #--------------------------------------------------------------------------
 
 # Scale the mass according to the stellar mass evolution and
 # the time between GC birth and EDGE snapshot:
+######### Need to rethink this element too! #########
 #--------------------------------------------------------------------------
 #'''
 time_difference = (h.calculate('t()')*1e3) - GC_birthtime
@@ -92,35 +104,24 @@ GC_hlr *= min(max(hmr_mult, 0.7), 1.0)
 
 # Reconstruct the potential at this time:
 #--------------------------------------------------------------------------
-profile_data = np.genfromtxt('./files/EDGE_profiles.txt', unpack=True, dtype=None)
-row = np.where([EDGE_sim_name.split('_')[0] in i[0].decode('ascii') for i in profile_data])[0][0]
-Mg = profile_data[row][1]
-rs_epoch = [profile_data[row][i] for i in [2,3,4,5,6,7]]
-gamma_epoch = [profile_data[row][i] for i in [8,9,10,11,12,13]]
-
 def interp(param, alpha):
   return alpha*param[0] + (1-alpha)*param[1]
 
-if (GC_birthtime < 1000):
-  ALP = (GC_birthtime-0.) / (1000.-0.)
-  rs = ALP*rs_epoch[1] + (1.0-ALP)*rs_epoch[0]
-  gamma = ALP*gamma_epoch[1] + (1.0-ALP)*gamma_epoch[0]
-elif (GC_birthtime < 2000) & (GC_birthtime > 1000):
-  ALP = (GC_birthtime-1000.) / (2000.-1000.)
-  rs = ALP*rs_epoch[2] + (1.0-ALP)*rs_epoch[1]
-  gamma = ALP*gamma_epoch[2] + (1.0-ALP)*gamma_epoch[1]
-elif (GC_birthtime < 4000) & (GC_birthtime < 2000):
-  ALP = (GC_birthtime-2000.) / (4000.-2000.)
-  rs = ALP*rs_epoch[3] + (1.0-ALP)*rs_epoch[2]
-  gamma = ALP*gamma_epoch[3] + (1.0-ALP)*gamma_epoch[2]
-elif (GC_birthtime < 6000) & (GC_birthtime > 4000):
-  ALP = (GC_birthtime-4000.) / (6000.-4000.)
-  rs = ALP*rs_epoch[4] + (1.0-ALP)*rs_epoch[3]
-  gamma = ALP*gamma_epoch[4] + (1.0-ALP)*gamma_epoch[3]
-elif (GC_birthtime < 14000):
-  ALP = (GC_birthtime-6000.) / (13800.-6000.)
-  rs = ALP*rs_epoch[5] + (1.0-ALP)*rs_epoch[4]
-  gamma = ALP*gamma_epoch[5] + (1.0-ALP)*gamma_epoch[4]
+import pickle
+filename = './files/host_profiles_dict.pk1'
+with open(filename, 'rb') as file:
+  props = pickle.load(file)
+
+sim = '_'.join([EDGE_sim_name, profile_type])
+time = props[sim]['time']
+rs = props[sim]['rs']
+gamma = props[sim]['gamma']
+Mg = props[sim]['Mg']
+i = np.where((GC_birthtime > time[:-1]*1e3) & (GC_birthtime <= time[1:]*1e3))[0][0]
+
+alpha = (GC_birthtime - time[i]*1e3) / (time[i+1]*1e3 - time[i]*1e3)
+rs = interp(rs[[i,i+1]], alpha)
+gamma = interp(gamma[[i,i+1]], alpha)
 #--------------------------------------------------------------------------
 
 # Plot the result and compare:
@@ -138,8 +139,8 @@ if plot_fit:
           r'$\gamma=%.2g$' % gamma
   ax.loglog(EDGE_r, func.Dehnen_profile(EDGE_r, np.log10(rs), np.log10(Mg), gamma), ls='--', lw=1, label=label)
 
-  ax.axvspan(EDGE_r.min(), EDGE_r[fit_range].min(), facecolor='k', alpha=0.1)
-  ax.axvspan(EDGE_r[fit_range].max(), EDGE_r.max(), facecolor='k', alpha=0.1)
+  ax.axvspan(EDGE_r.min(), EDGE_r[fit_range_arr].min(), facecolor='k', alpha=0.1)
+  ax.axvspan(EDGE_r[fit_range_arr].max(), EDGE_r.max(), facecolor='k', alpha=0.1)
 
   ax.set_xlim(*EDGE_r[[0,-1]])
 
@@ -218,13 +219,13 @@ print()
 #--------------------------------------------------------------------------
 if save_results:
   with open(path + f'/files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt', 'w') as file:
+    file.write(sim + '\n')
     file.write('%.8f\n' % GC_mass)
     file.write('%.8f\n' % GC_hlr)
     file.write('%.8f\n' % 10**GC_Z)
     file.write('%.8f\n' % GC_birthtime)
-    file.write('0.0 0.0 0.0 0.0 0.0 0.0 %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.2f %.2f %.2f %.2f %.2f %.2f\n' \
-               % (Mg, rs_epoch[0], rs_epoch[1], rs_epoch[2], rs_epoch[3], rs_epoch[4], rs_epoch[5], \
-                  gamma_epoch[0], gamma_epoch[1], gamma_epoch[2], gamma_epoch[3], gamma_epoch[4], gamma_epoch[5]))
+    file.write('%.8f\n' % binary_fraction)
+    file.write('0.0 0.0 0.0 0.0 0.0 0.0 %.6f \n' % Mg)
     file.write('%.6f %.6f %.6f %.6f %.6f %.6f\n' % (GC_pos_birth[0], GC_pos_birth[1], GC_pos_birth[2], \
                                                   GC_vel_birth[0], GC_vel_birth[1], GC_vel_birth[2]))
 

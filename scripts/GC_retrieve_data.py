@@ -34,6 +34,7 @@ with open('./files/GC_data_%s.pk1' % suite, 'rb') as f:
 
 # Loop over each simulation:
 #------------------------------------------------------------
+sims = ['/vol/ph/astro_data/shared/morkney2/GC_mock_obs/Nbody6_sims/Halo383_Massive_output_00040_145']
 for sim in sims:
 
   ID = int(''.join(c for c in sim.split('_')[-1] if c.isdigit()))
@@ -83,6 +84,8 @@ for sim in sims:
 
     # Centre the GC position:
     body_noBHs = s[i]['nbound'] & (s[i]['kstara'] != 14)
+    if not np.sum(body_noBHs):
+      continue
     cen = func.shrink(s[i])
     s[i]['pos'] -= cen
     s[i]['r'] = np.linalg.norm(s[i]['pos'], axis=1)

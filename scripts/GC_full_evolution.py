@@ -3,13 +3,14 @@ import numpy as np
 from read_out3 import read_nbody6
 import GC_functions as func
 
+import default_setup
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = 'Halo383_Massive_output_00036_126'
+sim_name = 'Halo1445_fiducial_hires_output_00021_8'
 s = read_nbody6(path+'/'+sim_name, df=True)
 #------------------------------------------------------------
 
@@ -55,3 +56,7 @@ ax[1].set_ylabel(r'Mass [M$_{\odot}$]', fontsize=fs)
 ax[2].plot(time, size, 'k-')
 ax[2].set_xlabel(r'Time [Gyr]', fontsize=fs)
 ax[2].set_ylabel(r'Half-light radius [pc]', fontsize=fs)
+
+for i in range(3):
+  ax[i].set_aspect('auto')
+  ax[i].tick_params(which='both', axis='both', labelsize=fs-2)
