@@ -26,12 +26,12 @@ import pickle
 # Simulation choices:
 #--------------------------------------------------------------------------
 profile_types = ('DM', 'Full', 'fantasy_core')
-profile_type = profile_types[1]
+profile_type = profile_types[2]
 #--------------------------------------------------------------------------
 
 # Load the simulation database:
 #--------------------------------------------------------------------------
-EDGE_sim_name = 'Halo605_fiducial_hires'
+EDGE_sim_name = 'Halo1459_fiducial_hires'
 tangos.core.init_db(TANGOS_path + EDGE_sim_name.split('_')[0] + '.db')
 session = tangos.core.get_default_session()
 #--------------------------------------------------------------------------
@@ -48,6 +48,11 @@ if profile_type == 'DM':
   EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile', 'rbins_profile')
 else:
   EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile+gas_density_profile+star_density_profile', 'rbins_profile')
+
+  # Also get smoothed cumulative stars formed:
+  cum_stars = gaussian_filter(np.cumsum(h['SFR_histogram']), sigma=5)
+  cum_stars = np.flip(np.interp(np.flip(EDGE_t), np.linspace(0, h.calculate('t()'), len(cum_stars)), cum_stars))
+  cum_stars /= cum_stars[0]
 
 # Rebin the density:
 N_bins = 150+1
@@ -70,9 +75,6 @@ priors['log_rs']['guess'] = np.log10(0.1)
 priors['log_rs']['min'] = -3
 priors['log_rs']['max'] = 2
 priors['log_rs']['vary'] = True
-#priors['log_rs']['guess'] = np.log10(0.4)
-#priors['log_rs']['min'] = np.log10(0.2)
-#priors['log_rs']['max'] = 2
 
 priors['log_Mg']['guess'] = np.log10(h['M200c'])
 priors['log_Mg']['min'] = 7.5
@@ -112,12 +114,11 @@ for j in range(2):
     # For fantasy cores, base fit on the half light radius:
     #--------------------------------------------------------------------------
     if profile_type == 'fantasy_core':
-      # Crop the fit range to the stellar half light:
-      # I need a much better and more consistent method here! The half radius can vary stochastically and by a lot...
-      if i == 0:
-        new_fit_min = np.min(h.calculate_for_progenitors('stellar_3D_halflight', nmax=3))
-        fit_range[0] = new_fit_min
+      # Crop the fit range based on amount of stars formed:
+      fit_range[0] = max(0.035, h['stellar_3D_halflight'] * cum_stars[i])
       fit_range_arr = (EDGE_r[0] > fit_range[0]) & (EDGE_r[0] <= fit_range[1])
+      fantasy_gamma = round((1-cum_stars[i])*4)/4.
+      fit_params.add('gamma', value=fantasy_gamma, vary=False)
       # Use a prior fit if the stellar half light excludes the whole radial range:
       if np.sum(fit_range_arr) < 1:
         rs.append(10**fit.best_values['log_rs'])
@@ -158,8 +159,9 @@ for j in range(2):
 
   # Smooth the gammas and refit:
   #--------------------------------------------------------------------------
-  if (j==0) & (profile_type!='fantasy_core'):
+  if j==0:
     gammas_old = np.array(gammas.copy())
+  if (j==0) & (profile_type!='fantasy_core'):
     gammas = np.array(gammas)
     if '6' in EDGE_sim_name:
       gammas = percentile_filter(gammas, 60, 12) # 10
@@ -169,12 +171,15 @@ for j in range(2):
       gammas = median_filter(gammas, 5)
     rs = []
   else:
-    gammas_old = np.array(gammas.copy())
     break
   #--------------------------------------------------------------------------
 
-gammas = np.array(gammas)
-rs = np.array(rs)
+EDGE_t = np.flip(EDGE_t)
+EDGE_r = np.flip(EDGE_r)
+EDGE_rho = np.flip(EDGE_rho)
+gammas = np.flip(gammas)
+gammas_old = np.flip(gammas_old)
+rs = np.flip(rs)
 Mg = 10**fit.best_values['log_Mg']
 #--------------------------------------------------------------------------
 
@@ -190,15 +195,33 @@ gamma_steps = gammas[np.append([0], np.where(np.diff(gammas))[0]+1)]
 for gamma in gamma_steps:
   if np.sum(gammas==gamma) <= 3:
     continue
-  t_temp = np.linspace(*EDGE_t[gammas==gamma][[-1,0]], int(50*np.diff(EDGE_t[gammas==gamma][[-1,0]])))
-  rs_temp = np.interp(t_temp, np.flip(EDGE_t[gammas==gamma]), np.flip(rs2[gammas==gamma]))
+  t_temp = np.linspace(*EDGE_t[gammas==gamma][[0,-1]], int(50*np.diff(EDGE_t[gammas==gamma][[0,-1]])))
+  rs_temp = np.interp(t_temp, EDGE_t[gammas==gamma], rs2[gammas==gamma])
   rs_temp = gaussian_filter(rs_temp, mode='nearest', sigma=5)
-  rs2[gammas==gamma] = np.flip(np.interp(np.flip(EDGE_t[gammas==gamma]), t_temp, rs_temp))
+  rs2[gammas==gamma] = np.interp(EDGE_t[gammas==gamma], t_temp, rs_temp)
 
 # Second pass:
 smoothed_rs = median_filter(rs2, 5)
 spikes = ~np.isclose(smoothed_rs, rs2, rtol=0.1) # Increase rtol to include more spikes.
 rs2[spikes] = smoothed_rs[spikes]
+
+# Whenever there is a step in gamma, remove a certain number of outputs:
+raw_EDGE_t = EDGE_t.copy()
+raw_gammas = gammas.copy()
+step_times = np.concatenate([[0], np.where(np.diff(gammas))[0], [len(gammas)-1]])
+cull = np.ones_like(EDGE_t).astype('bool')
+gamma_step_pad = 0.125 # [Gyr]
+if len(step_times):
+  for i in range(1, len(step_times)-1):
+    step_min = np.abs(EDGE_t - (EDGE_t[step_times[i]] - gamma_step_pad)).argmin()
+    step_max = np.abs(EDGE_t - (EDGE_t[step_times[i]] + gamma_step_pad)).argmin()
+    cull[step_min:step_max+1] = False
+  cull[step_times[[gammas[i] not in gammas[cull] for i in step_times]]] = True
+
+# This still lets some distinct gammas escape!!!
+EDGE_t = EDGE_t[cull]
+gammas = gammas[cull]
+rs2 = rs2[cull]
 #--------------------------------------------------------------------------
 
 # Plot the evolution of the fit parameters:
@@ -213,21 +236,22 @@ fig, ax = plt.subplots(figsize=(8, 8), ncols=2, nrows=2, gridspec_kw={'wspace':0
 
 colors = cm.coolwarm(NormaliseData(EDGE_t**(1/4.)))
 rho_at_r = 0.05 # [kpc]
-rho_with_t_fit = np.zeros_like(EDGE_t)
+rho_with_t_fit = np.zeros_like(raw_EDGE_t)
 rho_with_t_smoothed = np.zeros_like(EDGE_t)
-rho_with_t_raw = np.zeros_like(EDGE_t)
+rho_with_t_raw = np.zeros_like(raw_EDGE_t)
 r = np.logspace(np.log10(0.02), np.log10(20), 200)
-for i, (t, color) in enumerate(zip(EDGE_t, colors)):
+for i in range(len(raw_EDGE_t)):
   rho_with_t_raw[i] = np.interp(rho_at_r, EDGE_r[i], EDGE_rho[i])
-  profile = func.Dehnen_profile(r, np.log10(rs[i]), np.log10(Mg), gammas[i])
+  profile = func.Dehnen_profile(r, np.log10(rs[i]), np.log10(Mg), raw_gammas[i])
   rho_with_t_fit[i] = np.interp(rho_at_r, r, profile)
+for i, (t, color) in enumerate(zip(EDGE_t, colors)):
   profile = func.Dehnen_profile(r, np.log10(rs2[i]), np.log10(Mg), gammas[i])
   rho_with_t_smoothed[i] = np.interp(rho_at_r, r, profile)
-  ax[0,0].loglog(r, profile, lw=1, color=color, zorder=1000-i)
+  ax[0,0].loglog(r, profile, lw=1, color=color, zorder=i)
 
-ax[1,0].plot(EDGE_t[:len(gammas_old)], gammas_old, 'k')
+ax[1,0].plot(raw_EDGE_t[:len(gammas_old)], gammas_old, 'k')
 ax[1,0].plot(EDGE_t[:len(gammas)], gammas, 'r')
-ax[1,1].plot(EDGE_t[:len(rs)], rs, 'k')
+ax[1,1].plot(raw_EDGE_t[:len(rs)], rs, 'k')
 ax[1,1].plot(EDGE_t[:len(rs2)], rs2, 'r')
 
 ax[1,0].set_yticks([0, 0.25, 0.5, 0.75, 1])
@@ -247,8 +271,8 @@ ax[0,0].axvspan(0, fit_range[0], facecolor='whitesmoke', zorder=0)
 ax[0,0].axvspan(fit_range[1], 100, facecolor='whitesmoke', zorder=0)
 ax[0,0].axvline(rho_at_r, c='silver', ls='--', lw=1)
 
-ax[0,1].semilogy(EDGE_t, rho_with_t_raw, 'grey', label='EDGE')
-ax[0,1].semilogy(EDGE_t, rho_with_t_fit, 'k', label='Raw fit')
+ax[0,1].semilogy(raw_EDGE_t, rho_with_t_raw, 'grey', label='EDGE')
+ax[0,1].semilogy(raw_EDGE_t, rho_with_t_fit, 'k', label='Raw fit')
 ax[0,1].semilogy(EDGE_t, rho_with_t_smoothed, 'r', label='Smooth fit')
 ax[0,1].legend(fontsize=fs-4)
 
@@ -262,7 +286,7 @@ ax[0,1].set_xlabel('Time [Gyr]', fontsize=fs)
 for axes in np.ravel(fig.get_axes()):
   axes.tick_params(axis='both', which='both', labelsize=fs-2)
 
-ax[0,0].plot(EDGE_r[0], EDGE_rho[0], 'k', zorder=1000, lw=1, ls='--', label=r'EDGE ($z=0$)')
+ax[0,0].plot(EDGE_r[-1], EDGE_rho[-1], 'k', zorder=1000, lw=1, ls='--', label=r'EDGE ($z=0$)')
 #--------------------------------------------------------------------------
 
 # Load the GC ICs and represent them:
@@ -288,7 +312,7 @@ ax[0,0].legend(loc='upper right', fontsize=fs-4)
 
 # Save plot:
 #--------------------------------------------------------------------------
-fig.suptitle(EDGE_sim_name, fontsize=fs, y=0.925)
+fig.suptitle(EDGE_sim_name +' '+ profile_type, fontsize=fs, y=0.925)
 plt.savefig('./images/%s_evolution_%s.pdf' % (EDGE_sim_name, profile_type), bbox_inches='tight')
 #--------------------------------------------------------------------------
 
@@ -315,4 +339,7 @@ with open(filename, 'wb') as file:
 # Also save to a txt file:
 data = np.transpose([props[EDGE_sim_name]['time'], props[EDGE_sim_name]['rs'], props[EDGE_sim_name]['gamma']])
 np.savetxt('./files/%s.txt' % EDGE_sim_name, data)
+
+# Will need to manually remove high-frequency fluctuations by destroying certain outputs!
+# There should be a substantial time jump whenever there is a step in gammas.
 #--------------------------------------------------------------------------
