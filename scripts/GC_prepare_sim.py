@@ -100,6 +100,22 @@ hmr_mult = hmr_mults[count_IDs == count_ID]
 GC_mass *= mass_mult
 GC_hlr *= min(max(hmr_mult, 0.7), 1.0)
 #'''
+
+import stellar_devolution_functions as StellarDevolution
+
+param = StellarEvolution.Parameters('EDGE1')
+stars = StellarDevolution.Stars()
+
+for i in stellar_particles:
+  stars.add_stars(mass_in_Msol, metal_in_dex, age_in_Myr)
+
+# New stars, evolve independently!
+# Perform this a large number of times and take the medians?
+for j in range(time_difference_in_Myr):
+  stars.evolve(dt, param)
+
+# Add up masses to find initial mass:
+GC_mass = np.sum(stars.mass)
 #--------------------------------------------------------------------------
 
 # Reconstruct the potential at this time:
