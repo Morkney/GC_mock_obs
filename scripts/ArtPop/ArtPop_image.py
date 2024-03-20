@@ -33,7 +33,7 @@ arcsec_per_pixel = 0.05
 stretch = 0.2
 Q = 8
 
-data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+data = np.genfromtxt(path + 'files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
 GC_ID = np.where([int(sim_name.split('_')[-1]) == i[15] for i in data])[0][0]
 GC_Z = data[GC_ID][7]
 GC_birthtime = data[GC_ID][8]
@@ -136,7 +136,7 @@ exptime = dict(ACS_WFC_F814W=12830 * u.s, ACS_WFC_F606W=12830 * u.s, ACS_WFC_F47
 # Mock observe:
 images = []
 for b in bands:
-  _psf = fits.getdata(f'./files/{b}.fits', ignore_missing_end=True)
+  _psf = fits.getdata(path + f'files/{b}.fits', ignore_missing_end=True)
   obs = imager.observe(src, b, exptime=exptime[b], psf=_psf, zpt=22)
   images.append(obs.image * scale[b])
 

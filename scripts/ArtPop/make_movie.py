@@ -25,7 +25,7 @@ import imageio
 # Load chosen simulation:
 #------------------------------------------------------------
 sim_name = 'DM_test_new'
-s = read_nbody6(path+sim_name, df=True)
+s = read_nbody6(path + f'Nbody6_sims/{suite}/{sim_name}', df=True)
 #------------------------------------------------------------
 
 # Various setups:
@@ -175,7 +175,7 @@ tasks = np.arange(len(s))
 pool.map(frame, tasks)
 
 frames = np.array([imageio.imread('./pngs/movie_frame_%05d.png' % i) for i in range(0, len(s), 1)])
-writer = imageio.get_writer('./images/Movie_%s.mp4' % sim_name, fps=3)
+writer = imageio.get_writer('../images/Movie_%s.mp4' % sim_name, fps=3)
 for frame in frames:
   writer.append_data(frame)
 writer.close()

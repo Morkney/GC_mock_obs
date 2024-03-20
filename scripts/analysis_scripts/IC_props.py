@@ -10,9 +10,9 @@ plt.ion()
 
 # Load the GC ICs:
 #--------------------------------------------------------------------------
-data1 = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
-data2 = np.genfromtxt('./files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
-data3 = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
+data1 = np.genfromtxt(path + 'files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+data2 = np.genfromtxt(path + 'files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
+data3 = np.genfromtxt(path + 'files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
 
 data = np.array(list(data1) + list(data2) + list(data3))
 

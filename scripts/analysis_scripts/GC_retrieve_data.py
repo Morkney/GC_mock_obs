@@ -15,10 +15,8 @@ from scipy.interpolate import BSpline, make_interp_spline
 
 # Find all the simulation directories:
 #------------------------------------------------------------
-suite = ''
-sims = glob(path + '/' + suite + '/Halo*')
-suite = 'CHIMERA_massive_suite'
-data = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
+sims = glob(path + f'Nbody6_sims/{suite}/Halo*')
+data = np.genfromtxt(path + f'scripts/files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
 GC_ID = np.array([i[15] for i in data])
 GC_birthtime = np.array([i[8] for i in data]) # Myr
 
@@ -28,7 +26,7 @@ overwrite = True
 
 # Load the property dictionary:
 #------------------------------------------------------------
-with open('./files/GC_data_%s.pk1' % suite, 'rb') as f:
+with open(path + 'scripts/files/GC_data_{suite}.pk1', 'rb') as f:
   GC_data = pickle.load(f)
 #------------------------------------------------------------
 
@@ -45,9 +43,8 @@ for sim in sims:
     print('>    Creating new data entry.')
   elif not len(GC_data[sim.split('/')[-1]]):
     print('>    Creating new data entry.')
-  # Remember to change 0.3 back to 13.8!
   elif (sim.split('/')[-1] in list(GC_data.keys())) & \
-     (GC_data[sim.split('/')[-1]]['t'][-1] <= (0.3+birthtime)) & \
+     (GC_data[sim.split('/')[-1]]['t'][-1] <= (13.8+birthtime)) & \
      (GC_data[sim.split('/')[-1]]['mass'][-1] >= 1e3):
     print('>    Updating data entry on %s...' % sim.split('/')[-1])
     pass
@@ -156,7 +153,7 @@ for sim in sims:
     GC_data[sim]['cum_orb'] -= GC_data[sim]['cum_orb'][0]
 
   print('Saving...')
-  with open('./files/GC_data_%s.pk1' %suite, 'wb') as f:
+  with open(path + 'scripts/files/GC_data_{suite}.pk1', 'wb') as f:
     pickle.dump(GC_data, f)
 #------------------------------------------------------------
 

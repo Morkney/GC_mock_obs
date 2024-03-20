@@ -13,8 +13,6 @@ import default_setup
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm
-from matplotlib.colors import LogNorm
-import matplotlib.pyplot as plt, matplotlib.patches as patches
 plt.ion()
 
 from scipy.ndimage import median_filter
@@ -25,13 +23,14 @@ import pickle
 
 # Simulation choices:
 #--------------------------------------------------------------------------
-profile_types = ('DM', 'Full', 'fantasy_core')
-profile_type = profile_types[2]
+EDGE_sim_name = 'Halo624_fiducial_hires'
 #--------------------------------------------------------------------------
 
 # Load the simulation database:
 #--------------------------------------------------------------------------
-EDGE_sim_name = 'Halo1459_fiducial_hires'
+sim_type = 'CHIMERA' if '383' in EDGE_sim_name else 'EDGE'
+EDGE_path = EDGE_path[sim_type]
+TANGOS_path = TANGOS_path[sim_type]
 tangos.core.init_db(TANGOS_path + EDGE_sim_name.split('_')[0] + '.db')
 session = tangos.core.get_default_session()
 #--------------------------------------------------------------------------
@@ -44,7 +43,7 @@ h = tangos.get_halo(EDGE_sim_name + '/' + output + '/' + 'halo_1')
 
 # Find the density profile evolution with time:
 #--------------------------------------------------------------------------
-if profile_type == 'DM':
+if suite == 'DM':
   EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile', 'rbins_profile')
 else:
   EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile+gas_density_profile+star_density_profile', 'rbins_profile')
@@ -81,7 +80,7 @@ priors['log_Mg']['min'] = 7.5
 priors['log_Mg']['max'] = 10
 priors['log_Mg']['vary'] = True
 
-if profile_type == 'fantasy_core':
+if suite == 'Fantasy_cores':
   priors['gamma']['guess'] = 0.0
   priors['gamma']['min'] = None
   priors['gamma']['max'] = None
@@ -113,7 +112,7 @@ for j in range(2):
 
     # For fantasy cores, base fit on the half light radius:
     #--------------------------------------------------------------------------
-    if profile_type == 'fantasy_core':
+    if suite == 'Fantasy_cores':
       # Crop the fit range based on amount of stars formed:
       fit_range[0] = max(0.035, h['stellar_3D_halflight'] * cum_stars[i])
       fit_range_arr = (EDGE_r[0] > fit_range[0]) & (EDGE_r[0] <= fit_range[1])
@@ -161,7 +160,7 @@ for j in range(2):
   #--------------------------------------------------------------------------
   if j==0:
     gammas_old = np.array(gammas.copy())
-  if (j==0) & (profile_type!='fantasy_core'):
+  if (j==0) & (suite!='Fantasy_cores'):
     gammas = np.array(gammas)
     if '6' in EDGE_sim_name:
       gammas = percentile_filter(gammas, 60, 12) # 10
@@ -174,6 +173,7 @@ for j in range(2):
     break
   #--------------------------------------------------------------------------
 
+# Put everything in correct time order now:
 EDGE_t = np.flip(EDGE_t)
 EDGE_r = np.flip(EDGE_r)
 EDGE_rho = np.flip(EDGE_rho)
@@ -291,7 +291,7 @@ ax[0,0].plot(EDGE_r[-1], EDGE_rho[-1], 'k', zorder=1000, lw=1, ls='--', label=r'
 
 # Load the GC ICs and represent them:
 #--------------------------------------------------------------------------
-data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
 
 EDGE_sim_names = np.array([data[i][11].decode("utf-8") for i in range(len(data))])
 this_sim = EDGE_sim_names == EDGE_sim_name
@@ -312,25 +312,25 @@ ax[0,0].legend(loc='upper right', fontsize=fs-4)
 
 # Save plot:
 #--------------------------------------------------------------------------
-fig.suptitle(EDGE_sim_name +' '+ profile_type, fontsize=fs, y=0.925)
-plt.savefig('./images/%s_evolution_%s.pdf' % (EDGE_sim_name, profile_type), bbox_inches='tight')
+fig.suptitle(EDGE_sim_name +' '+ suite, fontsize=fs, y=0.925)
+plt.savefig(path+'/scripts/images/%s_evolution_%s.pdf' % (EDGE_sim_name, suite), bbox_inches='tight')
 #--------------------------------------------------------------------------
 
 # Make a new dictionary if one doesn't already exist, save the fits:
 #--------------------------------------------------------------------------
-filename = './files/host_profiles_dict.pk1'
+filename = path+'/scripts/files/host_profiles_dict.pk1'
 if os.path.isfile(filename):
   with open(filename, 'rb') as file:
     props = pickle.load(file)
 else:
   props = {}
 
-EDGE_sim_name += '_' + profile_type
+EDGE_sim_name += '_' + suite
 props[EDGE_sim_name] = {}
 props[EDGE_sim_name]['Mg'] = Mg
-props[EDGE_sim_name]['time'] = np.flip(np.concatenate([[100], EDGE_t, [0]]))
-props[EDGE_sim_name]['rs'] = np.flip(np.concatenate([[rs2[0]], rs2, [rs2[-1]]]))
-props[EDGE_sim_name]['gamma'] = np.flip(np.concatenate([[gammas[0]], gammas, [gammas[-1]]]))
+props[EDGE_sim_name]['time'] = np.concatenate([[0], EDGE_t, [100]])
+props[EDGE_sim_name]['rs'] = np.concatenate([[rs2[0]], rs2, [rs2[-1]]])
+props[EDGE_sim_name]['gamma'] = np.concatenate([[gammas[0]], gammas, [gammas[-1]]])
 
 # Save to dictionary:
 with open(filename, 'wb') as file:
@@ -338,8 +338,5 @@ with open(filename, 'wb') as file:
 
 # Also save to a txt file:
 data = np.transpose([props[EDGE_sim_name]['time'], props[EDGE_sim_name]['rs'], props[EDGE_sim_name]['gamma']])
-np.savetxt('./files/%s.txt' % EDGE_sim_name, data)
-
-# Will need to manually remove high-frequency fluctuations by destroying certain outputs!
-# There should be a substantial time jump whenever there is a step in gammas.
+np.savetxt(path+'/scripts/files/%s.txt' % EDGE_sim_name, data)
 #--------------------------------------------------------------------------

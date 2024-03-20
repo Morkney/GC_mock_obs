@@ -5,23 +5,19 @@ import pynbody
 import tangos
 import GC_functions as func
 import sys
+import os
 
 from lmfit import Parameters, Model
 
 import default_setup
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.colors import LogNorm
-import matplotlib.pyplot as plt, matplotlib.patches as patches
 plt.ion()
 
 # Enter EDGE1 to terminal to load pynbody modules
 
 # Simulation choices:
 #--------------------------------------------------------------------------
-profile_types = ('DM', 'Full', 'fantasy_core')
-profile_type = profile_types[0]
 binary_fractions = (0, 0.95)
 binary_fraction = binary_fractions[0]
 #--------------------------------------------------------------------------
@@ -35,7 +31,7 @@ save_results = True
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
-data = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
+data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
 
 GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
 GC_vel = np.array([data[4], data[5], data[6]]) # km s^-1
@@ -54,6 +50,9 @@ print('>    %i' % count_ID)
 
 # Load the simulation snapshot:
 #--------------------------------------------------------------------------
+sim_type = 'CHIMERA' if '383' in EDGE_sim_name else 'EDGE'
+EDGE_path = EDGE_path[sim_type]
+TANGOS_path = TANGOS_path[sim_type]
 tangos.core.init_db(TANGOS_path + EDGE_sim_name.split('_')[0] + '.db')
 session = tangos.core.get_default_session()
 
@@ -66,9 +65,9 @@ if np.linalg.norm(GC_pos)/1e3 > 40.:
 r_range = (0.02, 10)
 fit_range = (0.035, 3)
 if 'CHIMERA' in EDGE_sim_name:
-  data1 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
-  data2 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
-  data3 = np.loadtxt('./files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
+  data1 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
+  data2 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
+  data3 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
   EDGE_r = np.mean([data1[0], data2[0], data3[0]], axis=0)
   EDGE_rho = np.mean([data1[1], data2[1], data3[1]], axis=0)
 else:
@@ -88,19 +87,9 @@ fit_range_arr = (EDGE_r > fit_range[0]) & (EDGE_r <= fit_range[1])
 print(f'>    Loaded EDGE density profile for {EDGE_sim_name}, {EDGE_output}.')
 #--------------------------------------------------------------------------
 
-# Scale the mass according to the stellar mass evolution and
-# the time between GC birth and EDGE snapshot:
-######### Need to rethink this element too! #########
+# Scale the mass according to the stellar mass evolution:
 #--------------------------------------------------------------------------
-#'''
-time_difference = (h.calculate('t()')*1e3) - GC_birthtime
-count_IDs, mass_mults, hmr_mults, _ = np.loadtxt('./files/GC_multipliers_CHIMERA_massive.txt', unpack=True)
-mass_mult = mass_mults[count_IDs == count_ID]
-hmr_mult = hmr_mults[count_IDs == count_ID]
-GC_mass *= mass_mult
-GC_hlr *= min(max(hmr_mult, 0.7), 1.0)
-#'''
-
+'''
 import stellar_devolution_functions as StellarDevolution
 
 param = StellarEvolution.Parameters('EDGE1')
@@ -116,6 +105,7 @@ for j in range(time_difference_in_Myr):
 
 # Add up masses to find initial mass:
 GC_mass = np.sum(stars.mass)
+'''
 #--------------------------------------------------------------------------
 
 # Reconstruct the potential at this time:
@@ -124,11 +114,11 @@ def interp(param, alpha):
   return alpha*param[0] + (1-alpha)*param[1]
 
 import pickle
-filename = './files/host_profiles_dict.pk1'
+filename = path+'/scripts/files/host_profiles_dict.pk1'
 with open(filename, 'rb') as file:
   props = pickle.load(file)
 
-sim = '_'.join([EDGE_sim_name, profile_type])
+sim = '_'.join([EDGE_sim_name, suite])
 time = props[sim]['time']
 rs = props[sim]['rs']
 gamma = props[sim]['gamma']
@@ -165,12 +155,11 @@ if plot_fit:
 
   ax.tick_params(axis='both', which='both', labelsize=fs-2)
 
-  ax.legend(fontsize=fs-4)
+  ax.legend(loc='lower left', fontsize=fs-4)
 #--------------------------------------------------------------------------
 
 # Trace the orbit backwards until the time of birth:
 #--------------------------------------------------------------------------
-GC_birthtime = h.calculate('t()') - 0.1
 GC_time = h.calculate('t()')
 
 import agama
@@ -195,7 +184,7 @@ phase = np.append(GC_pos/1e3, GC_vel * -1)
 orbits = agama.orbit(ic=phase, potential=Dehnen_potential, time=total_time, trajsize=time_steps)
 
 # Retrieve the position and velocity at the time of birth:
-birthtime = (GC_time - GC_birthtime) / Gyr_to_timeunit # Gyr
+birthtime = (GC_time - GC_birthtime/1e3) / Gyr_to_timeunit # Gyr
 birthindex = np.abs(orbits[0] - birthtime).argmin()
 GC_pos_birth = orbits[1][birthindex,[0,1,2]]
 GC_vel_birth = orbits[1][birthindex,[3,4,5]] * -1
@@ -212,7 +201,8 @@ ax.axvspan(Rperi, Rapo, facecolor='r', alpha=0.1, zorder=-100)
 print('>    Integrated orbit backwards by %.2f Gyr with Agama.' % birthtime)
 #--------------------------------------------------------------------------
 
-# Calculate Nbody time unit:
+# Calculate Nbody time unit [doesn't match the one in Nbody6 for some reason]:
+#--------------------------------------------------------------------------
 G = pynbody.units.G.in_units('pc^3 Msol^-1 Myr^-2')
 a = GC_hlr / 1.3 # Plummer scale length
 E = (-3 * np.pi / 64.) * (G * GC_mass**2)/a # Energy
@@ -230,11 +220,14 @@ print('For %i outputs over %.2f Gyr:' % (steps, age_max/1e3))
 print('output frequency = %i' % output_f)
 print('Max output = %i' % max_output)
 print()
+#--------------------------------------------------------------------------
 
 # Save the results to a file:
 #--------------------------------------------------------------------------
 if save_results:
-  with open(path + f'/files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt', 'w') as file:
+  if not os.path.isdir(path + f'Nbody6_sims/{suite}_files/'):
+    os.mkdir(path + f'Nbody6_sims/{suite}_files/')
+  with open(path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt', 'w') as file:
     file.write(sim + '\n')
     file.write('%.8f\n' % GC_mass)
     file.write('%.8f\n' % GC_hlr)
@@ -245,7 +238,7 @@ if save_results:
     file.write('%.6f %.6f %.6f %.6f %.6f %.6f\n' % (GC_pos_birth[0], GC_pos_birth[1], GC_pos_birth[2], \
                                                   GC_vel_birth[0], GC_vel_birth[1], GC_vel_birth[2]))
 
-  print('>    Parameter file saved to ' + f'/files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt')
+  print('>    Parameter file saved to ' + path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt')
 else:
   print('>    Parameter file not saved.')
 #--------------------------------------------------------------------------

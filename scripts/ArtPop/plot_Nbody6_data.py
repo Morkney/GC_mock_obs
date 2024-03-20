@@ -23,7 +23,7 @@ cdict = {'red': ((0.0, 1.000, 1.000),
                  (1.0, 0.588, 0.588))}
 GC_cmap = mpl.colors.LinearSegmentedColormap('my_colormap', cdict, 256)
 
-def plot_Nbody6(sim, box=None, save_plot=True):
+def plot_Nbody6(sim, sim_name, box=None, save_plot=True):
 
   # Initialise figure:
   fs = 10
@@ -63,10 +63,10 @@ def plot_Nbody6(sim, box=None, save_plot=True):
 
   axes[0,1].remove()
 
-  axes[1,1].set_title(sim_name, fontsize=fs+2)
+  axes[1,1].set_title(sim_name, fontsize=fs-2)
 
   if save_plot:
-    file = './images/raw_%s.pdf' % sim_name
+    file = '../images/raw_%s.pdf' % sim_name
     plt.savefig(file, bbox_inches='tight')
     print('Plot saved to %s.' % file)
 

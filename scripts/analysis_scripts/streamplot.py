@@ -133,4 +133,4 @@ cbar.set_label(clabel, fontsize=fs)
 cbar.ax.tick_params(labelsize=fs-2)
 #--------------------------------------------------------------------
 
-plt.savefig('./images/streamplot_%s_%s.pdf' % (plot_type, stat_type), bbox_inches='tight')
+plt.savefig('../images/streamplot_%s_%s.pdf' % (plot_type, stat_type), bbox_inches='tight')

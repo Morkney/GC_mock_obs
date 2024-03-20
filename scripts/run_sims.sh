@@ -1,9 +1,10 @@
 #!/bin/bash
 
 count=0
+suite=$(python config.py)
 
 # Loop all available simulations:
-for file in ../Nbody6_sims/Halo*; do
+for file in ../Nbody6_sims/${suite}/Halo*; do
 
   # Skip if there is already a simulation:
   if [ ! -d "$file/run1" ]; then
@@ -13,15 +14,16 @@ for file in ../Nbody6_sims/Halo*; do
     if [ ! -f "$file/out" ]; then
       cd $file
       ./run.sh
+      count=$(( count+1 ))
       echo $file
       cd -
     #--------------------------------------------------------
 
-    # If the first output has been made, adjust timestepping and restart:
+    # If the initial sim has completed, adjust timestepping and restart:
     #--------------------------------------------------------
-    elif [ ! -f "$file/initiated" ]; then
+    elif [ ! -f "$file/initiated" ] && [[ $(tail $file/err -n 1) == *"IEEE_DIVIDE_BY_ZERO"* ]]; then
       # Get the new timestepping:
-      params=$(python update_timestepping.py $file)
+      params=$(python simulation_scripts/update_timestepping.py $file)
 
       # Skip if output hasn't run for long enough:
       if [ -z "${params}" ]; then
@@ -34,6 +36,7 @@ for file in ../Nbody6_sims/Halo*; do
       cd $file
       sed -i "s/1.00000000\s1.00000000\s1.00000000/1.00000000 ${params}/g" GC_IC.input
       ./run.sh
+      count=$(( count+1 ))
       echo $file
       touch initiated
       cd -
@@ -44,9 +47,8 @@ for file in ../Nbody6_sims/Halo*; do
     continue
   fi
 
-  # End if I have started off four new jobs already:
+  # End loop if I have started off four new jobs already:
   #--------------------------------------------------------
-  count=$(( count+1 ))
   if (( $count > 3 )) ; then
     break
   fi

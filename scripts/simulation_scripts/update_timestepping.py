@@ -12,7 +12,7 @@ with open(directory) as file:
     line = file.readline()
     if 'T*' in line:
       break
-T_star = float(line.split('T* = ')[1].split('<M> =')[0])
+T_star = float(line.split('T* =')[1].split('<M> =')[0])
 
 # Find new timestepping:
 age_max = 13.8 * 1e3

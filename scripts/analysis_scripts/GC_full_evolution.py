@@ -11,7 +11,7 @@ plt.ion()
 # Load chosen simulation:
 #------------------------------------------------------------
 sim_name = 'Halo1445_fiducial_hires_output_00021_8'
-s = read_nbody6(path+'/'+sim_name, df=True)
+s = read_nbody6(path + 'Nbody6_sims/{suite}/{sim_name}', df=True)
 #------------------------------------------------------------
 
 # Orbit, mass, size:
@@ -57,6 +57,11 @@ ax[2].plot(time, size, 'k-')
 ax[2].set_xlabel(r'Time [Gyr]', fontsize=fs)
 ax[2].set_ylabel(r'Half-light radius [pc]', fontsize=fs)
 
+def square(ax):
+  ax.set_aspect(np.diff(ax.get_xlim()) / np.diff(ax.get_ylim()))
+  return
+
 for i in range(3):
   ax[i].set_aspect('auto')
   ax[i].tick_params(which='both', axis='both', labelsize=fs-2)
+  square(ax[i])

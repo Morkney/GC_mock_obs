@@ -1,16 +1,18 @@
 #!/bin/bash
 
 GPU=0
+suite=$(python config.py)
 
 # Uncomment for single mode:
 #inputs=("../Nbody6_sims/files/Halo383_Massive_output_00014_123.txt")
 #for file in "${inputs[@]}"; do
+
 # List mode:
 #--------------------------------------------------------------------------
-for file in ../Nbody6_sims/files/Halo*; do
+for file in ../Nbody6_sims/${suite}_files/Halo*; do
   echo $file
   directory=${file%".txt"}
-  directory=${directory/files\/}
+  directory=${directory/_files/}
 
   # Sanity checks:
   #--------------------------------------------------------------------------
@@ -25,7 +27,7 @@ for file in ../Nbody6_sims/files/Halo*; do
     echo "$directory already exists"
     continue
   else
-    mkdir $directory
+    mkdir -p $directory
   fi
   #--------------------------------------------------------------------------
 

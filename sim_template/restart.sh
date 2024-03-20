@@ -3,7 +3,7 @@ export GPU_LIST="0"
 export OMP_NUM_THREADS=8
 rm -f out err OUT3* HIARCH ESC COLL COALL
 
-../nbody6df_evolve_super.gpu < rs > out 2> err &
+../../nbody6df_evolve_super.gpu < rs > out 2> err &
 
 date > run.log
 echo $HOSTNAME, PID $! >> run.log
