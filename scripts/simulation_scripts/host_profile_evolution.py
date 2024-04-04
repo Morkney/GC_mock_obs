@@ -2,6 +2,7 @@ from config import *
 
 import numpy as np
 import pynbody
+pynbody.config["halo-class-priority"] = [pynbody.halo.hop.HOPCatalogue]
 import tangos
 import GC_functions as func
 import sys
@@ -23,7 +24,7 @@ import pickle
 
 # Simulation choices:
 #--------------------------------------------------------------------------
-EDGE_sim_name = 'Halo624_fiducial_hires'
+EDGE_sim_name = 'Halo383_fiducial_early'
 #--------------------------------------------------------------------------
 
 # Load the simulation database:
@@ -43,23 +44,53 @@ h = tangos.get_halo(EDGE_sim_name + '/' + output + '/' + 'halo_1')
 
 # Find the density profile evolution with time:
 #--------------------------------------------------------------------------
-if suite == 'DM':
-  EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile', 'rbins_profile')
-else:
-  EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile+gas_density_profile+star_density_profile', 'rbins_profile')
+if sim_type == 'EDGE':
+  if suite == 'DM':
+    EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile', 'rbins_profile')
+  else:
+    EDGE_t, EDGE_rho, EDGE_r = h.calculate_for_progenitors('t()', 'dm_density_profile+gas_density_profile+star_density_profile', 'rbins_profile')
 
-  # Also get smoothed cumulative stars formed:
-  cum_stars = gaussian_filter(np.cumsum(h['SFR_histogram']), sigma=5)
-  cum_stars = np.flip(np.interp(np.flip(EDGE_t), np.linspace(0, h.calculate('t()'), len(cum_stars)), cum_stars))
-  cum_stars /= cum_stars[0]
+    # Also get smoothed cumulative stars formed:
+    cum_stars = gaussian_filter(np.cumsum(h['SFR_histogram']), sigma=5)
+    cum_stars = np.flip(np.interp(np.flip(EDGE_t), np.linspace(0, h.calculate('t()'), len(cum_stars)), cum_stars))
+    cum_stars /= cum_stars[0]
 
-# Rebin the density:
-N_bins = 150+1
-r_range = (0.02, 20)
+    hlr = h['stellar_3D_halflight']
+
+  # Rebin the density:
+  N_bins = 150+1
+  r_range = (0.02, 20)
+  r = np.logspace(*np.log10(r_range), N_bins)
+  for i in range(len(EDGE_t)):
+    EDGE_r[i], EDGE_rho[i] = func.rebin(EDGE_r[i], EDGE_rho[i], r)
+
+elif sim_type == 'CHIMERA':
+
+  # Load profile dictionary:
+  filename = path+'/scripts/files/CHIMERA_properties_dict.pk1'
+  if os.path.isfile(filename):
+    with open(filename, 'rb') as file:
+      props = pickle.load(file)
+  else:
+    sys.exit(0)
+
+  # Unpack:
+  outputs = list(props[EDGE_sim_name].keys())
+  EDGE_t = np.array([props[EDGE_sim_name][output]['t'] for output in outputs])
+  EDGE_r = np.array([props[EDGE_sim_name][output]['r'] for output in outputs])
+  if suite == 'DM':
+    EDGE_rho = np.array([props[EDGE_sim_name][output]['DM_rho'] for output in outputs])
+  else:
+    EDGE_rho = np.array([props[EDGE_sim_name][output]['DM_rho'] +
+                         props[EDGE_sim_name][output]['gas_rho'] +
+                         props[EDGE_sim_name][output]['star_rho'] for output in outputs])
+    cum_stars = gaussian_filter(np.cumsum(props[EDGE_sim_name][outputs[0]]['SFR_histogram']), sigma=5)
+    cum_stars = np.flip(np.interp(np.flip(EDGE_t), np.linspace(0, h.calculate('t()'), len(cum_stars)), cum_stars))
+    cum_stars /= cum_stars[0]
+
+    hlr = props[EDGE_sim_name][outputs[0]]['hlr']
+
 fit_range = [0.035, 3]
-r = np.logspace(*np.log10(r_range), N_bins)
-for i in range(len(EDGE_t)):
-  EDGE_r[i], EDGE_rho[i] = func.rebin(EDGE_r[i], EDGE_rho[i], r)
 fit_range_arr = (EDGE_r[0] > fit_range[0]) & (EDGE_r[0] <= fit_range[1])
 #--------------------------------------------------------------------------
 
@@ -70,12 +101,18 @@ priors = {}
 for param in params:
   priors[param] = {}
 
-priors['log_rs']['guess'] = np.log10(0.1)
+if sim_type == 'CHIMERA':
+  priors['log_rs']['guess'] = np.log10(0.5)
+elif sim_type == 'EDGE':
+  priors['log_rs']['guess'] = np.log10(0.1)
 priors['log_rs']['min'] = -3
 priors['log_rs']['max'] = 2
 priors['log_rs']['vary'] = True
 
-priors['log_Mg']['guess'] = np.log10(h['M200c'])
+try:
+  priors['log_Mg']['guess'] = np.log10(h['M200c'])
+except:
+  priors['log_Mg']['guess'] = np.log10(6e9)
 priors['log_Mg']['min'] = 7.5
 priors['log_Mg']['max'] = 10
 priors['log_Mg']['vary'] = True
@@ -114,7 +151,8 @@ for j in range(2):
     #--------------------------------------------------------------------------
     if suite == 'Fantasy_cores':
       # Crop the fit range based on amount of stars formed:
-      fit_range[0] = max(0.035, h['stellar_3D_halflight'] * cum_stars[i])
+      fit_range[0] = max(0.035, hlr * cum_stars[i])
+      print(fit_range)
       fit_range_arr = (EDGE_r[0] > fit_range[0]) & (EDGE_r[0] <= fit_range[1])
       fantasy_gamma = round((1-cum_stars[i])*4)/4.
       fit_params.add('gamma', value=fantasy_gamma, vary=False)
@@ -232,7 +270,7 @@ def NormaliseData(data):
 
 # Compare the raw and smoothed data:
 fs = 10
-fig, ax = plt.subplots(figsize=(8, 8), ncols=2, nrows=2, gridspec_kw={'wspace':0.3, 'hspace':0.2})
+fig, ax = plt.subplots(figsize=(8, 6), ncols=2, nrows=2, gridspec_kw={'wspace':0.35, 'hspace':0.3})
 
 colors = cm.coolwarm(NormaliseData(EDGE_t**(1/4.)))
 rho_at_r = 0.05 # [kpc]
@@ -274,13 +312,13 @@ ax[0,0].axvline(rho_at_r, c='silver', ls='--', lw=1)
 ax[0,1].semilogy(raw_EDGE_t, rho_with_t_raw, 'grey', label='EDGE')
 ax[0,1].semilogy(raw_EDGE_t, rho_with_t_fit, 'k', label='Raw fit')
 ax[0,1].semilogy(EDGE_t, rho_with_t_smoothed, 'r', label='Smooth fit')
-ax[0,1].legend(fontsize=fs-4)
+ax[0,1].legend(loc='upper right', fontsize=fs-4)
 
 ax[0,1].set_xscale('log')
 
 ax[0,0].set_ylabel(r'Density [M$_{\odot}\,{\rm kpc}^{-3}$]', fontsize=fs)
 ax[0,0].set_xlabel('Radius [kpc]', fontsize=fs)
-ax[0,1].set_ylabel(r'Density at $R_{\rm G}=%.2f\,$kpc [M$_{\odot}\,{\rm kpc}^{-3}$]' % rho_at_r, fontsize=fs)
+ax[0,1].set_ylabel(r'Density at $%.2f\,$kpc [M$_{\odot}\,{\rm kpc}^{-3}$]' % rho_at_r, fontsize=fs)
 ax[0,1].set_xlabel('Time [Gyr]', fontsize=fs)
 
 for axes in np.ravel(fig.get_axes()):
@@ -291,7 +329,10 @@ ax[0,0].plot(EDGE_r[-1], EDGE_rho[-1], 'k', zorder=1000, lw=1, ls='--', label=r'
 
 # Load the GC ICs and represent them:
 #--------------------------------------------------------------------------
-data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+if sim_type == 'EDGE':
+  data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
+elif sim_type == 'CHIMERA':
+  data = np.genfromtxt(path+'/scripts/files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
 
 EDGE_sim_names = np.array([data[i][11].decode("utf-8") for i in range(len(data))])
 this_sim = EDGE_sim_names == EDGE_sim_name
@@ -312,7 +353,7 @@ ax[0,0].legend(loc='upper right', fontsize=fs-4)
 
 # Save plot:
 #--------------------------------------------------------------------------
-fig.suptitle(EDGE_sim_name +' '+ suite, fontsize=fs, y=0.925)
+fig.suptitle(EDGE_sim_name +' '+ suite, fontsize=fs, y=0.935)
 plt.savefig(path+'/scripts/images/%s_evolution_%s.pdf' % (EDGE_sim_name, suite), bbox_inches='tight')
 #--------------------------------------------------------------------------
 
