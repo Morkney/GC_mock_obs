@@ -24,7 +24,7 @@ import pickle
 
 # Simulation choices:
 #--------------------------------------------------------------------------
-EDGE_sim_name = 'Halo383_fiducial_early'
+EDGE_sim_name = 'Halo383_Massive'
 #--------------------------------------------------------------------------
 
 # Load the simulation database:
@@ -103,6 +103,7 @@ for param in params:
 
 if sim_type == 'CHIMERA':
   priors['log_rs']['guess'] = np.log10(0.5)
+  priors['log_rs']['guess'] = np.log10(1)
 elif sim_type == 'EDGE':
   priors['log_rs']['guess'] = np.log10(0.1)
 priors['log_rs']['min'] = -3
@@ -332,7 +333,7 @@ ax[0,0].plot(EDGE_r[-1], EDGE_rho[-1], 'k', zorder=1000, lw=1, ls='--', label=r'
 if sim_type == 'EDGE':
   data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
 elif sim_type == 'CHIMERA':
-  data = np.genfromtxt(path+'/scripts/files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
+  data = np.genfromtxt(path+'/scripts/files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
 
 EDGE_sim_names = np.array([data[i][11].decode("utf-8") for i in range(len(data))])
 this_sim = EDGE_sim_names == EDGE_sim_name

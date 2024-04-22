@@ -1,4 +1,5 @@
 import numpy as np
+import tangos
 
 import default_setup
 import matplotlib.pyplot as plt
@@ -42,6 +43,7 @@ ax[0].set_title('Fit to 1-10 Myr with scatter', fontsize=fs)
 
 # Compare with the EDGE SC sizes and masses:
 #--------------------------------------------------------------
+'''
 data1 = np.genfromtxt('./files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
 data2 = np.genfromtxt('./files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
 data3 = np.genfromtxt('./files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
@@ -54,12 +56,45 @@ GC_hlr = np.array([data[i][10] for i in range(len(data))]) # pc
 GC_mass = 10**np.array([data[i][9] for i in range(len(data))]) # Msol
 GC_Z = np.array([data[i][7] for i in range(len(data))]) # dec
 EDGE_sim_name = np.array([data[i][11].decode("utf-8") for i in range(len(data))])
+'''
+
+# Load Ethan's property dict:
+from config import *
+data = load_data()
+
+def get_dict(key):
+  return np.concatenate([[data[i][j][key] for j in list(data[i].keys())] for i in list(data.keys())])
+
+# Parse GC properties:
+GC_pos = get_dict('Galacto-centred position')
+GC_vel = get_dict('Galacto-centred velocity')
+GC_hlr = get_dict('3D half-mass radius')
+GC_mass = np.array([np.sum(i) for i in get_dict('Stellar Mass')])
+GC_Z = get_dict('Median Fe/H')
+GC_birthtime = get_dict('Median birthtime')
+EDGE_sim_name = np.concatenate([[i]*len(data[i].keys()) for i in list(data.keys())])
+EDGE_output = get_dict('Output Number')
+EDGE_halo = get_dict('Tangos Halo ID')
+GC_ID = np.concatenate([[j for j in list(data[i].keys())] for i in list(data.keys())])
+
+# Parse particle properties:
+GC_masses = get_dict('Stellar Mass')
+GC_metals = get_dict('Fe/H Values')
+GC_births = get_dict('Birth Times')
+
+# Read the initial mass from the pre-created files:
+for n, (i, j, k) in enumerate(zip(EDGE_sim_name, GC_ID, EDGE_output)):
+  ID = data[i][j]['Internal ID']
+  with open('../../Nbody6_sims/%s_files/%s_output_%05d_%s.txt' % (suite, i, k, ID)) as f:
+    f.readline()
+    GC_mass[n] = float(f.readline())
 #--------------------------------------------------------------
 
 # Plot the distributions:
 #--------------------------------------------------------------
 sims = [EDGE_sim_name[i] for i in sorted(np.unique(EDGE_sim_name, return_index=True)[1])]
-colours = ['fuchsia', 'black', 'goldenrod', 'blueviolet', 'mediumseagreen', 'orangered', 'dodgerblue']
+sims = np.array(sims)[[1,3,4,5,2,0]]
+colours = ['fuchsia', 'black', 'goldenrod', 'blueviolet', 'orangered', 'mediumseagreen']
 for i, (sim, colour) in enumerate(zip(sims, colours)):
   select = EDGE_sim_name == sim
   ax[1].scatter(GC_mass[select], GC_hlr[select], s=10, facecolor='None', edgecolor=colour, zorder=100-i, label=sim)
@@ -101,3 +136,19 @@ for axes in fig.get_axes():
   axes.set_xlim(*bins[0][[0,-1]])
   axes.set_ylim(*bins[1][[0,-1]])
   axes.set_aspect(np.diff(np.log10(axes.get_xlim())) / np.diff(np.log10(axes.get_ylim())))
+
+# Write results to a dictionary file:
+#--------------------------------------------------------------
+filename = '../files/adjusted_hmr.pk1'
+
+import pickle
+props = {}
+for sim_name in np.unique(EDGE_sim_name):
+  selection = EDGE_sim_name==sim_name
+  props[sim_name] = {}
+  for i, ID in enumerate(GC_ID[selection]):
+    props[sim_name][ID] = new_GC_hlr[selection][i]
+
+with open(filename, 'wb') as file:
+  pickle.dump(props, file)
+#--------------------------------------------------------------

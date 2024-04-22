@@ -3,9 +3,14 @@
 GPU=0
 suite=$(python config.py)
 
-# Uncomment for single mode:
-#inputs=("../Nbody6_sims/files/Halo383_Massive_output_00014_123.txt")
-#for file in "${inputs[@]}"; do
+# Find the directory for the GC ICs:
+#--------------------------------------------------------------------------
+if [[ $suite == *"compact"* ]]; then
+  IC_path="../Nbody6_sims/GC_ICs_compact/"
+else
+  IC_path="../Nbody6_sims/GC_ICs/"
+fi
+#--------------------------------------------------------------------------
 
 # List mode:
 #--------------------------------------------------------------------------
@@ -52,6 +57,26 @@ for file in ../Nbody6_sims/${suite}_files/Halo*; do
 
   # Rename the GC_IC.fort.10 file to a default name:
   mv $directory/GC_IC.fort.10 $directory/fort.10
+
+  # If the IC file already exists, transplant it:
+  path=(${file//// })
+  path=${path[3]%".txt"}
+  if [ -f ${IC_path}/${path}/fort.10 ]; then
+    echo "Duplicating GC ICs from stored file."
+    cp ${IC_path}/${path}/fort.10 $directory/fort.10
+    # Borrow first 3 lines of input file:
+    line1=$(sed -n 1p ${IC_path}/${path}/GC_IC.input)
+    line2=$(sed -n 2p ${IC_path}/${path}/GC_IC.input)
+    line3=$(sed -n 3p ${IC_path}/${path}/GC_IC.input)
+    sed -i "1s/.*/${line1}/" $directory/GC_IC.input
+    sed -i "2s/.*/${line2}/" $directory/GC_IC.input
+    sed -i "3s/.*/${line3}/" $directory/GC_IC.input
+  else
+    echo "Saving GC ICs to stored file."
+    mkdir -p ${IC_path}/${path}
+    cp $directory/fort.10 ${IC_path}/${path}/fort.10
+    cp $directory/GC_IC.input ${IC_path}/${path}/GC_IC.input
+  fi
 
   galaxy="$(sed -n 7p $file)$TOFF"
   phase=$(sed -n 8p $file)

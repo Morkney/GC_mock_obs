@@ -2,6 +2,7 @@ from config import *
 import numpy as np
 from read_out3 import read_nbody6
 import GC_functions as func
+import sys
 
 import default_setup
 import matplotlib as mpl
@@ -10,8 +11,9 @@ plt.ion()
 
 # Load chosen simulation:
 #------------------------------------------------------------
-sim_name = 'Halo1445_fiducial_hires_output_00021_8'
-s = read_nbody6(path + 'Nbody6_sims/{suite}/{sim_name}', df=True)
+#sim_name = 'Halo605_fiducial_hires_output_00036_40'
+sim_name = sys.argv[1]
+s = read_nbody6(path + f'Nbody6_sims/{suite}/{sim_name}', df=True)
 #------------------------------------------------------------
 
 # Orbit, mass, size:
@@ -65,3 +67,6 @@ for i in range(3):
   ax[i].set_aspect('auto')
   ax[i].tick_params(which='both', axis='both', labelsize=fs-2)
   square(ax[i])
+
+string = suite + '\n' + sim_name
+fig.suptitle(string, fontsize=fs)

@@ -24,13 +24,15 @@ binary_fraction = binary_fractions[0]
 
 # Parameters:
 #--------------------------------------------------------------------------
-GC_ID = int(sys.argv[1])
-plot_fit = True
+host_sim = sys.argv[1]
+GC_ID = int(sys.argv[2])
+plot_fit = False
 save_results = True
 #--------------------------------------------------------------------------
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
+'''
 data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
 
 GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
@@ -46,6 +48,27 @@ internal_ID = int(data[14])
 count_ID = int(data[15])
 
 print('>    %i' % count_ID)
+'''
+
+# Load Ethan's property dict:
+data = load_data()
+
+# Parse GC properties:
+GC_pos = np.array(data[host_sim][GC_ID]['Galacto-centred position'])
+GC_vel = np.array(data[host_sim][GC_ID]['Galacto-centred velocity'])
+GC_hlr = data[host_sim][GC_ID]['3D half-mass radius']
+GC_mass = data[host_sim][GC_ID]['Stellar Mass'].sum()
+GC_Z = data[host_sim][GC_ID]['Median Fe/H']
+GC_birthtime = data[host_sim][GC_ID]['Median birthtime']
+EDGE_output = 'output_%05d' % data[host_sim][GC_ID]['Output Number']
+EDGE_sim_name = host_sim
+EDGE_halo = data[host_sim][GC_ID]['Tangos Halo ID'] + 1
+internal_ID = data[host_sim][GC_ID]['Internal ID'] # Non-exclusive
+
+# Parse particle properties:
+GC_masses = data[host_sim][GC_ID]['Stellar Mass']
+GC_metals = data[host_sim][GC_ID]['Fe/H Values']
+GC_births = data[host_sim][GC_ID]['Birth Times']
 #--------------------------------------------------------------------------
 
 # Load the simulation snapshot:
@@ -64,7 +87,7 @@ if np.linalg.norm(GC_pos)/1e3 > 40.:
 # Get EDGE simulation density, averaged over next 3 simulation snapshots:
 r_range = (0.02, 10)
 fit_range = (0.035, 3)
-if 'CHIMERA' in EDGE_sim_name:
+if 'CHIMERA' in sim_type:
   data1 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.previous.timestep.extension, unpack=True)
   data2 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.timestep.extension, unpack=True)
   data3 = np.loadtxt(path+'/scripts/files/CHIMERA_massive/rho_%s.txt' % h.next.timestep.extension, unpack=True)
@@ -89,23 +112,29 @@ print(f'>    Loaded EDGE density profile for {EDGE_sim_name}, {EDGE_output}.')
 
 # Scale the mass according to the stellar mass evolution:
 #--------------------------------------------------------------------------
-'''
 import stellar_devolution_functions as StellarDevolution
 
-param = StellarEvolution.Parameters('EDGE1')
-stars = StellarDevolution.Stars()
+GC_time = h.calculate('t()')
+param = StellarDevolution.Parameters('EDGE1')
 
-for i in stellar_particles:
-  stars.add_stars(mass_in_Msol, metal_in_dex, age_in_Myr)
+# Integrate each particle individually:
+dt = 0.1 # [Myr]
+GC_mass = 0
+for i in range(len(GC_masses)):
+  stars = StellarDevolution.Stars(npartmax=1)
+  stars.add_stars(GC_masses[i], 10**GC_metals[i], GC_time*1e3-GC_births[i])
+  for j in range(int(np.round((GC_time*1e3 - GC_births[i]) / dt))):
+    stars.evolve(dt, param)
+  GC_mass += stars.mass[0]
+#--------------------------------------------------------------------------
 
-# New stars, evolve independently!
-# Perform this a large number of times and take the medians?
-for j in range(time_difference_in_Myr):
-  stars.evolve(dt, param)
-
-# Add up masses to find initial mass:
-GC_mass = np.sum(stars.mass)
-'''
+# Scale the half-light radius if necessary:
+#--------------------------------------------------------------------------
+if 'compact' in suite:
+  # Load the entire array of GC hlr and GC initial mass (adjusted for evolution, too!)
+  # Best to calculate these separately and then load them in...
+  # In fact, better to do all the calculations in the other script and then load them in...
+  pass
 #--------------------------------------------------------------------------
 
 # Reconstruct the potential at this time:
@@ -160,8 +189,6 @@ if plot_fit:
 
 # Trace the orbit backwards until the time of birth:
 #--------------------------------------------------------------------------
-GC_time = h.calculate('t()')
-
 import agama
 
 # Set up units:
@@ -192,11 +219,13 @@ GC_vel_birth = orbits[1][birthindex,[3,4,5]] * -1
 # Find orbital peri and apo-centre:
 Rperi, Rapo = Dehnen_potential.Rperiapo(phase)
 
-ax.text(Rperi, 0.99, r'$R_{\rm peri}$', fontsize=fs-2, color='r', rotation=90, ha='right', va='top', transform=ax.get_xaxis_transform())
-ax.text(Rapo, 0.99, r'$R_{\rm apo}$', fontsize=fs-2, color='r', rotation=90, ha='left', va='top', transform=ax.get_xaxis_transform())
-ax.axvline(Rperi, c='r', lw=0.5, zorder=-100)
-ax.axvline(Rapo, c='r', lw=0.5, zorder=-100)
-ax.axvspan(Rperi, Rapo, facecolor='r', alpha=0.1, zorder=-100)
+if plot_fit:
+  ax.text(Rperi, 0.99, r'$R_{\rm peri}$', fontsize=fs-2, color='r', rotation=90, ha='right', va='top', transform=ax.get_xaxis_transform())
+  ax.text(Rapo, 0.99, r'$R_{\rm apo}$', fontsize=fs-2, color='r', rotation=90, ha='left', va='top', transform=ax.get_xaxis_transform())
+  ax.axvline(Rperi, c='r', lw=0.5, zorder=-100)
+  ax.axvline(Rapo, c='r', lw=0.5, zorder=-100)
+  ax.axvspan(Rperi, Rapo, facecolor='r', alpha=0.1, zorder=-100)
+  ax.axvline(np.linalg.norm(GC_pos_birth), c='r', lw=1, zorder=100)
 
 print('>    Integrated orbit backwards by %.2f Gyr with Agama.' % birthtime)
 #--------------------------------------------------------------------------
@@ -227,18 +256,18 @@ print()
 if save_results:
   if not os.path.isdir(path + f'Nbody6_sims/{suite}_files/'):
     os.mkdir(path + f'Nbody6_sims/{suite}_files/')
-  with open(path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt', 'w') as file:
+  with open(path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{internal_ID}.txt', 'w') as file:
     file.write(sim + '\n')
     file.write('%.8f\n' % GC_mass)
     file.write('%.8f\n' % GC_hlr)
     file.write('%.8f\n' % 10**GC_Z)
-    file.write('%.8f\n' % GC_birthtime)
+    file.write('%.8f\n' % (GC_birthtime/1e3))
     file.write('%.8f\n' % binary_fraction)
     file.write('0.0 0.0 0.0 0.0 0.0 0.0 %.6f \n' % Mg)
     file.write('%.6f %.6f %.6f %.6f %.6f %.6f\n' % (GC_pos_birth[0], GC_pos_birth[1], GC_pos_birth[2], \
-                                                  GC_vel_birth[0], GC_vel_birth[1], GC_vel_birth[2]))
+                                                    GC_vel_birth[0], GC_vel_birth[1], GC_vel_birth[2]))
 
-  print('>    Parameter file saved to ' + path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{count_ID}.txt')
+  print('>    Parameter file saved to ' + path + f'Nbody6_sims/{suite}_files/{EDGE_sim_name}_{EDGE_output}_{internal_ID}.txt')
 else:
   print('>    Parameter file not saved.')
 #--------------------------------------------------------------------------

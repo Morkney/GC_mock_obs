@@ -28,7 +28,7 @@ session = tangos.core.get_default_session()
 #--------------------------------------------------------------------------
 output = tangos.get_simulation(EDGE_sim_name).timesteps[-1].extension
 h = tangos.get_halo(EDGE_sim_name + '/' + output + '/' + 'halo_1')
-halo = h.calculate('halo_number()')
+halo = h.calculate('halo_number()') - 1
 #--------------------------------------------------------------------------
 
 # Open dictionary:
@@ -50,15 +50,15 @@ i = 0
 props[EDGE_sim_name] = {}
 while True:
 
-  halo = h.calculate('halo_number()')
+  halo = h.calculate('halo_number()') - 1
   output = h.timestep.extension
   props[EDGE_sim_name][output] = {}
   print(f'>    {output}')
 
-  s = pynbody.load(EDGE_path + EDGE_sim_name +'/'+ output)
+  s = pynbody.load(EDGE_path + EDGE_sim_name +'/'+ output, maxlevel=20)
   s.physical_units()
   s_h = s.halos()
-  s_h = s_h[h.calculate('halo_number()')]
+  s_h = s_h[halo]
   s.g['pos']; s.d['pos']; s.s['pos']
   s.g['mass']; s.d['mass']; s.s['mass']
   try:

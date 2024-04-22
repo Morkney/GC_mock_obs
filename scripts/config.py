@@ -9,7 +9,7 @@ import numpy as np
 #| Incomplete     | Incomplete        | Incomplete          | Incomplete     | Incomplete       | Incomplete                |
 # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 suites = ['DM', 'Full', 'Fantasy_cores', 'DM_compact', 'Full_compact', 'Fantasy_cores_compact']
-suite = suites[2]
+suite = suites[1]
 print(suite)
 path = '/vol/ph/astro_data/shared/morkney2/GC_mock_obs/'
 #---------------------------------------------------------------------
@@ -20,4 +20,13 @@ EDGE_path = {'EDGE':'/vol/ph/astro_data/shared/morkney/EDGE/', \
              'CHIMERA':'/vol/ph/astro_data/shared/etaylor/CHIMERA/'}
 TANGOS_path = {'EDGE':'/vol/ph/astro_data/shared/morkney/EDGE/tangos/', \
                'CHIMERA':'/vol/ph/astro_data/shared/etaylor/CHIMERA/'}
+#---------------------------------------------------------------------
+
+# Ethan's GC data dictionary:
+#---------------------------------------------------------------------
+def load_data():
+  import pickle5 as pickle
+  with open('/vol/ph/astro_data/shared/etaylor/paper2/data/GC_Nbody_2.data', 'rb') as handle:
+      b = pickle.load(handle)
+  return b
 #---------------------------------------------------------------------
