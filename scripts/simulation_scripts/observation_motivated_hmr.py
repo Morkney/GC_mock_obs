@@ -62,6 +62,12 @@ EDGE_sim_name = np.array([data[i][11].decode("utf-8") for i in range(len(data))]
 from config import *
 data = load_data()
 
+#####
+# Discard el fuckboi:
+data['Halo383_fiducial_early'].pop(24)
+data['Halo383_Massive'].pop(148)
+#####
+
 def get_dict(key):
   return np.concatenate([[data[i][j][key] for j in list(data[i].keys())] for i in list(data.keys())])
 
@@ -116,6 +122,12 @@ for i in range(repeats):
   sorted_GC_hlr = np.argsort(GC_hlr)
   new_GC_hlr[i][sorted_GC_hlr] = new_hlr[sorted_new_hlr] * young_SC_fit(GC_mass[sorted_GC_hlr])
 new_GC_hlr = np.median(new_GC_hlr, axis=0)
+
+# Enforce maximum and minimum restrictions on the dataset:
+new_GC_hlr[new_GC_hlr > 10.] = 10.
+new_GC_hlr[new_GC_hlr < 0.5] = 0.5
+#new_GC_hlr[np.where((EDGE_sim_name=='Halo624_fiducial_hires') & (GC_ID==3))] *= 1.5
+new_GC_hlr[np.where((EDGE_sim_name=='Halo624_fiducial_hires') & (GC_ID==1))] *= 1.5
 
 for i, (sim, colour) in enumerate(zip(sims, colours)):
   select = EDGE_sim_name == sim

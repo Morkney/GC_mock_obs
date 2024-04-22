@@ -67,7 +67,7 @@ while True:
     break
 
   # Centre:
-  cen = pynbody.analysis.halo.shrink_sphere_center(s_h.d, shrink_factor=0.8)
+  cen = pynbody.analysis.halo.shrink_sphere_center(s_h.d, shrink_factor=0.95)
   s['pos'] -= cen
 
   # Retrieve the profile:
