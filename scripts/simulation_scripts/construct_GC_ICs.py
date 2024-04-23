@@ -6,6 +6,7 @@ import tangos
 import GC_functions as func
 import sys
 import os
+import pickle
 
 from lmfit import Parameters, Model
 
@@ -32,24 +33,6 @@ save_results = True
 
 # Load the GC properties from file:
 #--------------------------------------------------------------------------
-'''
-data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)[GC_ID-1]
-
-GC_pos = np.array([data[1], data[2], data[3]]) * 1e3 # pc
-GC_vel = np.array([data[4], data[5], data[6]]) # km s^-1
-GC_hlr = data[10] # pc
-GC_mass = 10**data[9] # Msol
-GC_Z = data[7] # dec
-GC_birthtime = data[8] # Myr
-EDGE_output = 'output_%05d' % data[12]
-EDGE_sim_name = data[11].decode("utf-8")
-EDGE_halo = int(data[13]) + 1
-internal_ID = int(data[14])
-count_ID = int(data[15])
-
-print('>    %i' % count_ID)
-'''
-
 # Load Ethan's property dict:
 data = load_data()
 
@@ -126,15 +109,20 @@ for i in range(len(GC_masses)):
   for j in range(int(np.round((GC_time*1e3 - GC_births[i]) / dt))):
     stars.evolve(dt, param)
   GC_mass += stars.mass[0]
+
+print('Modified initial masses.')
 #--------------------------------------------------------------------------
 
 # Scale the half-light radius if necessary:
 #--------------------------------------------------------------------------
 if 'compact' in suite:
-  # Load the entire array of GC hlr and GC initial mass (adjusted for evolution, too!)
-  # Best to calculate these separately and then load them in...
-  # In fact, better to do all the calculations in the other script and then load them in...
-  pass
+  filename = path+'/scripts/files/adjusted_hmr.pk1'
+  with open(filename, 'rb') as file:
+    hmr_props = pickle.load(file)
+
+  GC_hlr = hmr_props[EDGE_sim_name][GC_ID]
+
+  print('Modified initial sizes.')
 #--------------------------------------------------------------------------
 
 # Reconstruct the potential at this time:
@@ -142,16 +130,15 @@ if 'compact' in suite:
 def interp(param, alpha):
   return alpha*param[0] + (1-alpha)*param[1]
 
-import pickle
 filename = path+'/scripts/files/host_profiles_dict.pk1'
 with open(filename, 'rb') as file:
   props = pickle.load(file)
 
 sim = '_'.join([EDGE_sim_name, suite])
-time = props[sim]['time']
-rs = props[sim]['rs']
-gamma = props[sim]['gamma']
-Mg = props[sim]['Mg']
+time = props[sim.replace('_compact', '')]['time']
+rs = props[sim.replace('_compact', '')]['rs']
+gamma = props[sim.replace('_compact', '')]['gamma']
+Mg = props[sim.replace('_compact', '')]['Mg']
 i = np.where((GC_birthtime > time[:-1]*1e3) & (GC_birthtime <= time[1:]*1e3))[0][0]
 
 alpha = (GC_birthtime - time[i]*1e3) / (time[i+1]*1e3 - time[i]*1e3)

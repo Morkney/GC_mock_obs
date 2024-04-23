@@ -24,7 +24,7 @@ import pickle
 
 # Simulation choices:
 #--------------------------------------------------------------------------
-EDGE_sim_name = 'Halo383_Massive'
+EDGE_sim_name = 'Halo383_fiducial_early'
 #--------------------------------------------------------------------------
 
 # Load the simulation database:
@@ -214,8 +214,12 @@ for j in range(2):
 
 # Put everything in correct time order now:
 EDGE_t = np.flip(EDGE_t)
-EDGE_r = np.flip(EDGE_r)
-EDGE_rho = np.flip(EDGE_rho)
+if 'CHIMERA' not in sim_type:
+  EDGE_r = np.flip(EDGE_r)
+  EDGE_rho = np.flip(EDGE_rho)
+else:
+  EDGE_r = np.flip(EDGE_r, axis=0)
+  EDGE_rho = np.flip(EDGE_rho, axis=0)
 gammas = np.flip(gammas)
 gammas_old = np.flip(gammas_old)
 rs = np.flip(rs)
@@ -333,7 +337,7 @@ ax[0,0].plot(EDGE_r[-1], EDGE_rho[-1], 'k', zorder=1000, lw=1, ls='--', label=r'
 if sim_type == 'EDGE':
   data = np.genfromtxt(path+'/scripts/files/GC_property_table.txt', unpack=True, skip_header=2, dtype=None)
 elif sim_type == 'CHIMERA':
-  data = np.genfromtxt(path+'/scripts/files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
+  data = np.genfromtxt(path+'/scripts/files/GC_property_table_CHIMERA.txt', unpack=True, skip_header=2, dtype=None)
 
 EDGE_sim_names = np.array([data[i][11].decode("utf-8") for i in range(len(data))])
 this_sim = EDGE_sim_names == EDGE_sim_name
