@@ -10,15 +10,26 @@ plt.ion()
 from glob import glob
 import pickle
 import time
+import os
 
 from scipy.interpolate import BSpline, make_interp_spline
+from scipy.ndimage import uniform_filter
+from scipy.interpolate import splrep, BSpline
 
 # Find all the simulation directories:
 #------------------------------------------------------------
 sims = glob(path + f'Nbody6_sims/{suite}/Halo*')
-data = np.genfromtxt(path + f'scripts/files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
-GC_ID = np.array([i[15] for i in data])
-GC_birthtime = np.array([i[8] for i in data]) # Myr
+#data = np.genfromtxt(path + f'scripts/files/GC_property_table_CHIMERA_massive.txt', unpack=True, skip_header=2, dtype=None)
+
+# Load Ethan's property dict:
+data = load_data()
+
+def get_dict(key):
+  return np.concatenate([[data[i][j][key] for j in list(data[i].keys())] for i in list(data.keys())])
+
+#GC_ID = np.concatenate([[j for j in list(data[i].keys())] for i in list(data.keys())])
+GC_ID = get_dict('Internal ID')
+GC_birthtime = get_dict('Median birthtime') # [Myr]
 
 lum_max = 100 # Lsol
 overwrite = True
@@ -26,18 +37,26 @@ overwrite = True
 
 # Load the property dictionary:
 #------------------------------------------------------------
-with open(path + 'scripts/files/GC_data_{suite}.pk1', 'rb') as f:
-  GC_data = pickle.load(f)
+filename = path + f'scripts/files/GC_data_{suite}.pk1'
+if os.path.isfile(filename):
+  with open(filename, 'rb') as f:
+    GC_data = pickle.load(f)
+else:
+  GC_data = {}
 #------------------------------------------------------------
 
 # Loop over each simulation:
 #------------------------------------------------------------
-sims = ['/vol/ph/astro_data/shared/morkney2/GC_mock_obs/Nbody6_sims/Halo383_Massive_output_00040_145']
+#sims = ['/vol/ph/astro_data/shared/morkney2/GC_mock_obs/Nbody6_sims/Full/']
+#sims = ['/vol/ph/astro_data/shared/morkney2/GC_mock_obs/Nbody6_sims/Full/Halo1459_fiducial_hires_output_00020_2']
 for sim in sims:
+
+  print(sim)
 
   ID = int(''.join(c for c in sim.split('_')[-1] if c.isdigit()))
   birthtime = GC_birthtime[np.where(GC_ID == ID)[0][0]]
 
+  # Various accounting:
   if sim.split('/')[-1] not in list(GC_data.keys()):
     GC_data[sim.split('/')[-1]] = {}
     print('>    Creating new data entry.')
@@ -64,12 +83,12 @@ for sim in sims:
   print('>    %i' % ID, end='')
 
   # Initialise property arrays:
-  GC_properties = ['t', 'rg', 'vg', 'cum_orb', 'mass', 'mtot', 'hlr', 'hmr', 'mV', 'mV_hlr', 'mV_hmr']
+  GC_properties = ['t', 'rg', 'vg', 'cum_orb', 'rp', 'ra', 'ecc', 'mass', 'mtot', 'hlr', 'hmr', 'mV', 'mV_hlr', 'mV_hmr']
   for GC_property in GC_properties:
-    GC_data[sim][GC_property] = np.empty(len(s))
+    GC_data[sim][GC_property] = np.ones(len(s)) * np.nan
   GC_properties = ['posg', 'velg']
   for GC_property in GC_properties:
-    GC_data[sim][GC_property] = np.empty([len(s),3])
+    GC_data[sim][GC_property] = np.ones([len(s),3]) * np.nan
 
   for i in range(len(s)):
 
@@ -77,7 +96,7 @@ for sim in sims:
       continue
 
     # Get the simulation time:
-    GC_data[sim]['t'][i] = (birthtime + s[i]['age']) / 1e3 # Gyr [?]
+    GC_data[sim]['t'][i] = (birthtime + s[i]['age']) / 1e3 # Gyr
 
     # Centre the GC position:
     body_noBHs = s[i]['nbound'] & (s[i]['kstara'] != 14)
@@ -124,12 +143,15 @@ for sim in sims:
   print(', %.2fs' % (time_step2-time_step1))
 
   # Fit a spline to better-resolve the full orbit:
+  not_nan = ~np.any(np.isnan(GC_data[sim]['posg']), axis=1) & (np.gradient(GC_data[sim]['t']) != 0)
   factor = 5
-  k = min(len(s)-1, 3)
-  orig_res = np.linspace(0, 1, len(s))
-  spline_res = np.linspace(0, 1, len(s)*factor)
-  torb = make_interp_spline(orig_res, GC_data[sim]['t'], k=k)(spline_res)
-  rorb = np.linalg.norm(make_interp_spline(orig_res, GC_data[sim]['posg'], k=k)(spline_res), axis=1)
+  k = min(np.sum(not_nan)-1, 3)
+  orig_res = np.linspace(0, 1, np.sum(not_nan))
+  spline_res = np.linspace(0, 1, np.sum(not_nan)*factor)
+  # Time should not be a spline to avoid negative values:
+  torb = np.interp(spline_res, orig_res, GC_data[sim]['t'][not_nan])
+  # Rg must be very smooth to correctly identify apos/peris:
+  rorb = np.linalg.norm([BSpline(*splrep(orig_res, uniform_filter(j, size=4), s=len(j)))(spline_res) for j in GC_data[sim]['posg'][not_nan].T], axis=0)
 
   # Find the apo- and pericentres:
   differential = np.diff(np.sign(np.diff(rorb)))
@@ -152,8 +174,17 @@ for sim in sims:
     GC_data[sim]['cum_orb'] = np.interp(GC_data[sim]['t'], torb, orb_count)
     GC_data[sim]['cum_orb'] -= GC_data[sim]['cum_orb'][0]
 
+    # Also calculate the orbital peri/apo/eccentricity at all times:
+    for rap, rap_IDs in zip(['ra', 'rp'], [apos, peris]):
+      segments = np.digitize(GC_data[sim]['t'], torb[rap_IDs])
+      segments[segments==len(rap_IDs)] -= 1
+      GC_data[sim][rap] = rorb[rap_IDs][segments]
+
+    GC_data[sim]['ecc'] = (GC_data[sim]['ra']-GC_data[sim]['rp'])/\
+                          (GC_data[sim]['ra']+GC_data[sim]['rp'])
+
   print('Saving...')
-  with open(path + 'scripts/files/GC_data_{suite}.pk1', 'wb') as f:
+  with open(filename, 'wb') as f:
     pickle.dump(GC_data, f)
 #------------------------------------------------------------
 

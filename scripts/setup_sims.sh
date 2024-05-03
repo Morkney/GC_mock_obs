@@ -88,7 +88,7 @@ for file in ../Nbody6_sims/${suite}_files/Halo*; do
   sed -i "7s/.*/0 0 0 2 1 0 0 2 0 3/" $directory/GC_IC.input
 
   # Copy the profile fits to the simulation directory:
-  cp ./files/$SIM.txt $directory/Host.txt
+  cp ./files/${SIM%"_compact"}.txt $directory/Host.txt
 
   echo Built $directory
   #--------------------------------------------------------------------------

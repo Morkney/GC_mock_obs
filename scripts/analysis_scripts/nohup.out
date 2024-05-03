@@ -1,0 +1,23 @@
+Full_compact
+>    Creating new data entry.
+Read all OUT3 files.
+>    Less than 10 bound particles.
+>    45, 34.29s
+Saving...
+>    Creating new data entry.
+Read all OUT3 files.
+>    Less than 10 bound particles.
+>    48, 40.51s
+Saving...
+>    Creating new data entry.
+Read all OUT3 files.
+>    Less than 10 bound particles.
+>    4, 696.02s
+Traceback (most recent call last):
+  File "GC_retrieve_data.py", line 146, in <module>
+    rorb = np.linalg.norm(make_interp_spline(orig_res, GC_data[sim]['posg'], k=k)(spline_res), axis=1)
+  File "/user/HS301/m18366/.local/lib/python3.6/site-packages/scipy/interpolate/_bsplines.py", line 764, in make_interp_spline
+    y = _as_float_array(y, check_finite)
+  File "/user/HS301/m18366/.local/lib/python3.6/site-packages/scipy/interpolate/_bsplines.py", line 33, in _as_float_array
+    raise ValueError("Array must not contain infs or nans.")
+ValueError: Array must not contain infs or nans.

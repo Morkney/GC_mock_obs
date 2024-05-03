@@ -21,15 +21,17 @@ fs = 12
 fig, ax = plt.subplots(figsize=(9,3), ncols=3, nrows=1, gridspec_kw={'wspace':0.5})
 
 time = np.empty(len(s))
-orbit_pos = np.empty([len(s), 3])
-mass = np.empty(len(s))
-size = np.empty(len(s))
+orbit_pos = np.zeros([len(s), 3])
+mass = np.zeros(len(s))
+size = np.zeros(len(s))
 for i, s_i in enumerate(s):
 
   time[i] = s_i['age']/1e3
 
   # Centre the GC position:
   body_noBHs = s_i['nbound'] & (s_i['kstara'] != 14)
+  if not np.sum(body_noBHs):
+    continue
   cen = np.average(s_i['pos'][body_noBHs], weights=s_i['mass'][body_noBHs], axis=0)
 
   # Orbital position:
@@ -63,10 +65,10 @@ def square(ax):
   ax.set_aspect(np.diff(ax.get_xlim()) / np.diff(ax.get_ylim()))
   return
 
-for i in range(3):
-  ax[i].set_aspect('auto')
-  ax[i].tick_params(which='both', axis='both', labelsize=fs-2)
-  square(ax[i])
+for j in range(3):
+  ax[j].set_aspect('auto')
+  ax[j].tick_params(which='both', axis='both', labelsize=fs-2)
+  square(ax[j])
 
 string = suite + '\n' + sim_name
 fig.suptitle(string, fontsize=fs)
